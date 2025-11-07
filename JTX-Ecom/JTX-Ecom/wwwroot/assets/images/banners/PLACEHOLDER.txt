@@ -1,0 +1,12 @@
+HERO BANNER PLACEHOLDER
+
+Add your hero banner image here:
+- banner-hero.jpg
+
+Recommended specifications:
+- Format: JPG or WebP
+- Dimensions: 1920x800 pixels (or similar wide aspect ratio)
+- File size: Under 1MB
+- Subject: Concert crowd, stage, or music-themed imagery
+
+The hero section will use a gradient background if no image is provided.

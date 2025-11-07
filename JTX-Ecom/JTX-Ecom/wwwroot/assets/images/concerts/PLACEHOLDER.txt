@@ -1,0 +1,16 @@
+CONCERT IMAGES PLACEHOLDER
+
+Add your concert images here with the following naming convention:
+- concert1.jpg
+- concert2.jpg
+- concert3.jpg
+- concert4.jpg
+- concert5.jpg
+- concert6.jpg
+
+Recommended image specifications:
+- Format: JPG, PNG, or WebP
+- Dimensions: 600x400 pixels (or 3:2 aspect ratio)
+- File size: Under 500KB for optimal loading
+
+The homepage will automatically use fallback gradient placeholders if images are not found.

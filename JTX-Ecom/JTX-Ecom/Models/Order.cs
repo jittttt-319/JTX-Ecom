@@ -1,0 +1,52 @@
+using System.ComponentModel.DataAnnotations;
+
+namespace JTX_Ecom.Models
+{
+    public class Order
+    {
+        [Key]
+        public int OrderId { get; set; }
+
+        [Required]
+        [StringLength(50)]
+        public string OrderNumber { get; set; } = string.Empty;
+
+        [Required]
+        [StringLength(200)]
+        public string CustomerName { get; set; } = string.Empty;
+
+        [Required]
+        [EmailAddress]
+        [StringLength(200)]
+        public string CustomerEmail { get; set; } = string.Empty;
+
+        [Required]
+        [Phone]
+        [StringLength(20)]
+        public string CustomerPhone { get; set; } = string.Empty;
+
+        [Required]
+        [Range(0.01, 100000.00)]
+        public decimal TotalAmount { get; set; }
+
+        [Required]
+        [StringLength(20)]
+        public string PaymentStatus { get; set; } = "Pending"; // Pending, Completed, Failed, Refunded
+
+        [StringLength(100)]
+        public string? PaymentMethod { get; set; }
+
+        [StringLength(200)]
+        public string? TransactionId { get; set; }
+
+        public DateTime OrderDate { get; set; } = DateTime.Now;
+
+        public DateTime? PaymentDate { get; set; }
+
+        [Required]
+        public int Quantity { get; set; }
+
+        // Navigation properties
+        public virtual ICollection<Ticket>? Tickets { get; set; }
+    }
+}

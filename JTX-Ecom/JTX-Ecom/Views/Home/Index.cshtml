@@ -1,8 +1,177 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model IEnumerable<JTX_Ecom.Models.Concert>
+
+@{
+    ViewData["Title"] = "Home";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="hero-content">
+        <h1 class="hero-title">Experience Live Music</h1>
+        <p class="hero-subtitle">Book tickets to the hottest concerts and music festivals</p>
+        <div class="mt-4">
+            <a asp-controller="Concerts" asp-action="Index" class="btn btn-primary-custom me-3">Browse Events</a>
+            <a href="#features" class="btn btn-outline-custom">Learn More</a>
+        </div>
+    </div>
+</section>
+
+<!-- Search Section -->
+<div class="container">
+    <div class="search-box">
+        <form asp-controller="Concerts" asp-action="Index" method="get">
+            <input type="text" name="search" class="search-input" placeholder="Search for concerts, artists, or venues...">
+            <button type="submit" class="search-btn"><i class="fas fa-search"></i> Search</button>
+        </form>
+    </div>
 </div>
+
+<!-- Featured Concerts Section -->
+<section id="concerts" class="container my-5">
+    <h2 class="section-title">Featured Concerts</h2>
+    
+    @if (Model != null && Model.Any())
+    {
+        <div class="row">
+            @foreach (var concert in Model)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="concert-card">
+                        <img src="@concert.ImageUrl" alt="@concert.Title" class="concert-card-img" 
+                             onerror="this.style.background='linear-gradient(135deg, #8338ec, #ff006e)'; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22250%22%3E%3Crect fill=%22%238338ec%22 width=%22600%22 height=%22250%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22Arial%22 font-size=%2224%22 fill=%22white%22%3E@concert.Title%3C/text%3E%3C/svg%3E';">
+                        
+                        <!-- Genre Badge -->
+                        <span class="badge bg-primary position-absolute top-0 end-0 m-2">
+                            @concert.Genre
+                        </span>
+                        
+                        <div class="concert-card-body">
+                            <div class="concert-date">
+                                <i class="far fa-calendar"></i> @concert.EventDate.ToString("ddd, MMM dd, yyyy").ToUpper()
+                            </div>
+                            <h3 class="concert-title">@concert.Title</h3>
+                            <p class="text-muted mb-2">
+                                <i class="fas fa-user"></i> @concert.Artist
+                            </p>
+                            <p class="concert-location">
+                                <i class="fas fa-map-marker-alt"></i> @concert.Venue?.Name, @concert.Venue?.City
+                            </p>
+                            
+                            <!-- Ticket Availability -->
+                            @{
+                                var availabilityPercent = concert.TotalTickets > 0 
+                                    ? Math.Round((decimal)concert.AvailableTickets / concert.TotalTickets * 100, 0)
+                                    : 0;
+                            }
+                            @if (concert.AvailableTickets > 0)
+                            {
+                                <p class="text-muted small mb-2">
+                                    <i class="fas fa-ticket-alt"></i> @concert.AvailableTickets tickets available
+                                </p>
+                            }
+                            else
+                            {
+                                <p class="text-danger small mb-2">
+                                    <i class="fas fa-exclamation-circle"></i> Sold Out
+                                </p>
+                            }
+                            
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <span class="concert-price">From $@concert.BasePrice.ToString("F2")</span>
+                                <a asp-controller="Concerts" asp-action="Details" asp-route-id="@concert.ConcertId" 
+                                   class="btn btn-primary-custom btn-sm">
+                                    View Details
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info text-center py-5" role="alert">
+            <i class="fas fa-info-circle fa-3x mb-3"></i>
+            <h4>No concerts available at the moment</h4>
+            <p>Check back soon for upcoming events!</p>
+        </div>
+    }
+
+    <div class="text-center mt-4">
+        <a asp-controller="Concerts" asp-action="Index" class="btn btn-outline-custom">
+            <i class="fas fa-calendar-alt"></i> View All Events
+        </a>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section id="features" class="container my-5 py-5">
+    <h2 class="section-title">Why Choose JTX Concerts?</h2>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="feature-box">
+                <div class="feature-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h4 class="feature-title">Secure Booking</h4>
+                <p class="feature-description">
+                    100% secure payment processing with buyer protection guarantee for all transactions.
+                </p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="feature-box">
+                <div class="feature-icon">
+                    <i class="fas fa-mobile-alt"></i>
+                </div>
+                <h4 class="feature-title">Mobile Tickets</h4>
+                <p class="feature-description">
+                    Instant digital tickets delivered to your phone. No printing required, just show and go!
+                </p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="feature-box">
+                <div class="feature-icon">
+                    <i class="fas fa-headset"></i>
+                </div>
+                <h4 class="feature-title">24/7 Support</h4>
+                <p class="feature-description">
+                    Our dedicated support team is always ready to help with any questions or concerns.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action Section -->
+<section class="container my-5 py-5">
+    <div class="text-center" style="background: linear-gradient(135deg, #1a1f3a 0%, #0a0e27 100%); padding: 4rem 2rem; border-radius: 20px;">
+        <h2 class="mb-4" style="font-size: 2.5rem; color: white;">Never Miss Out on Your Favorite Artists</h2>
+        <p class="mb-4" style="font-size: 1.2rem; color: #e0e0e0;">
+            Sign up now and get exclusive access to presale tickets and special offers!
+        </p>
+        <form class="row g-3 justify-content-center" style="max-width: 600px; margin: 0 auto;">
+            <div class="col-auto" style="flex: 1;">
+                <input type="email" class="form-control" placeholder="Enter your email" 
+                       style="padding: 0.8rem; border-radius: 50px; background: var(--card-bg); color: white; border: 2px solid var(--secondary-color);">
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary-custom">Subscribe</button>
+            </div>
+        </form>
+    </div>
+</section>
+
+<!-- Additional Styles for Concert Cards -->
+<style>
+    .concert-card {
+        position: relative;
+        transition: transform 0.3s ease;
+    }
+    
+    .concert-card:hover {
+        transform: translateY(-5px);
+    }
+</style>

@@ -1,0 +1,212 @@
+﻿@{
+    ViewData["Title"] = "Home";
+}
+
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="hero-content">
+        <h1 class="hero-title">Experience Live Music</h1>
+        <p class="hero-subtitle">Book tickets to the hottest concerts and music festivals</p>
+        <div class="mt-4">
+            <a href="#concerts" class="btn btn-primary-custom me-3">Browse Events</a>
+            <a href="#features" class="btn btn-outline-custom">Learn More</a>
+        </div>
+    </div>
+</section>
+
+<!-- Search Section -->
+<div class="container">
+    <div class="search-box">
+        <input type="text" class="search-input" placeholder="Search for concerts, artists, or venues...">
+        <button class="search-btn"><i class="fas fa-search"></i> Search</button>
+    </div>
+</div>
+
+<!-- Featured Concerts Section -->
+<section id="concerts" class="container my-5">
+    <h2 class="section-title">Featured Concerts</h2>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="concert-card">
+                <img src="~/assets/images/concerts/concert1.jpg" alt="Rock Festival" class="concert-card-img" 
+                     onerror="this.style.background='linear-gradient(135deg, #8338ec, #ff006e)'; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22250%22%3E%3Crect fill=%22%238338ec%22 width=%22600%22 height=%22250%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22Arial%22 font-size=%2224%22 fill=%22white%22%3ERock Festival 2025%3C/text%3E%3C/svg%3E';">
+                <div class="concert-card-body">
+                    <div class="concert-date">
+                        <i class="far fa-calendar"></i> SAT, MAR 15, 2025
+                    </div>
+                    <h3 class="concert-title">Rock Festival 2025</h3>
+                    <p class="concert-location">
+                        <i class="fas fa-map-marker-alt"></i> Madison Square Garden, New York
+                    </p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="concert-price">From $89</span>
+                        <a href="#" class="btn btn-primary-custom btn-sm">Get Tickets</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="concert-card">
+                <img src="~/assets/images/concerts/concert2.jpg" alt="Pop Extravaganza" class="concert-card-img"
+                     onerror="this.style.background='linear-gradient(135deg, #ff006e, #ffbe0b)'; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22250%22%3E%3Crect fill=%22%23ff006e%22 width=%22600%22 height=%22250%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22Arial%22 font-size=%2224%22 fill=%22white%22%3EPop Extravaganza%3C/text%3E%3C/svg%3E';">
+                <div class="concert-card-body">
+                    <div class="concert-date">
+                        <i class="far fa-calendar"></i> FRI, APR 5, 2025
+                    </div>
+                    <h3 class="concert-title">Pop Extravaganza</h3>
+                    <p class="concert-location">
+                        <i class="fas fa-map-marker-alt"></i> Staples Center, Los Angeles
+                    </p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="concert-price">From $125</span>
+                        <a href="#" class="btn btn-primary-custom btn-sm">Get Tickets</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="concert-card">
+                <img src="~/assets/images/concerts/concert3.jpg" alt="Jazz Night Live" class="concert-card-img"
+                     onerror="this.style.background='linear-gradient(135deg, #ffbe0b, #8338ec)'; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22250%22%3E%3Crect fill=%22%23ffbe0b%22 width=%22600%22 height=%22250%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22Arial%22 font-size=%2224%22 fill=%22white%22%3EJazz Night Live%3C/text%3E%3C/svg%3E';">
+                <div class="concert-card-body">
+                    <div class="concert-date">
+                        <i class="far fa-calendar"></i> SAT, APR 20, 2025
+                    </div>
+                    <h3 class="concert-title">Jazz Night Live</h3>
+                    <p class="concert-location">
+                        <i class="fas fa-map-marker-alt"></i> Blue Note, Chicago
+                    </p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="concert-price">From $65</span>
+                        <a href="#" class="btn btn-primary-custom btn-sm">Get Tickets</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="concert-card">
+                <img src="~/assets/images/concerts/concert4.jpg" alt="Electronic Dance Night" class="concert-card-img"
+                     onerror="this.style.background='linear-gradient(135deg, #8338ec, #ffbe0b)'; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22250%22%3E%3Crect fill=%22%238338ec%22 width=%22600%22 height=%22250%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22Arial%22 font-size=%2224%22 fill=%22white%22%3EEDM Festival%3C/text%3E%3C/svg%3E';">
+                <div class="concert-card-body">
+                    <div class="concert-date">
+                        <i class="far fa-calendar"></i> SAT, MAY 10, 2025
+                    </div>
+                    <h3 class="concert-title">Electronic Dance Night</h3>
+                    <p class="concert-location">
+                        <i class="fas fa-map-marker-alt"></i> Ultra Arena, Miami
+                    </p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="concert-price">From $149</span>
+                        <a href="#" class="btn btn-primary-custom btn-sm">Get Tickets</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="concert-card">
+                <img src="~/assets/images/concerts/concert5.jpg" alt="Country Music Fest" class="concert-card-img"
+                     onerror="this.style.background='linear-gradient(135deg, #ff006e, #8338ec)'; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22250%22%3E%3Crect fill=%22%23ff006e%22 width=%22600%22 height=%22250%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22Arial%22 font-size=%2224%22 fill=%22white%22%3ECountry Fest%3C/text%3E%3C/svg%3E';">
+                <div class="concert-card-body">
+                    <div class="concert-date">
+                        <i class="far fa-calendar"></i> SUN, JUN 2, 2025
+                    </div>
+                    <h3 class="concert-title">Country Music Fest</h3>
+                    <p class="concert-location">
+                        <i class="fas fa-map-marker-alt"></i> Grand Ole Opry, Nashville
+                    </p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="concert-price">From $79</span>
+                        <a href="#" class="btn btn-primary-custom btn-sm">Get Tickets</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="concert-card">
+                <img src="~/assets/images/concerts/concert6.jpg" alt="Hip Hop Summit" class="concert-card-img"
+                     onerror="this.style.background='linear-gradient(135deg, #ffbe0b, #ff006e)'; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22250%22%3E%3Crect fill=%22%23ffbe0b%22 width=%22600%22 height=%22250%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22Arial%22 font-size=%2224%22 fill=%22white%22%3EHip Hop Summit%3C/text%3E%3C/svg%3E';">
+                <div class="concert-card-body">
+                    <div class="concert-date">
+                        <i class="far fa-calendar"></i> FRI, JUN 21, 2025
+                    </div>
+                    <h3 class="concert-title">Hip Hop Summit</h3>
+                    <p class="concert-location">
+                        <i class="fas fa-map-marker-alt"></i> Barclays Center, Brooklyn
+                    </p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="concert-price">From $95</span>
+                        <a href="#" class="btn btn-primary-custom btn-sm">Get Tickets</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center mt-4">
+        <a href="#" class="btn btn-outline-custom">View All Events</a>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section id="features" class="container my-5 py-5">
+    <h2 class="section-title">Why Choose JTX Concerts?</h2>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="feature-box">
+                <div class="feature-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h4 class="feature-title">Secure Booking</h4>
+                <p class="feature-description">
+                    100% secure payment processing with buyer protection guarantee for all transactions.
+                </p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="feature-box">
+                <div class="feature-icon">
+                    <i class="fas fa-mobile-alt"></i>
+                </div>
+                <h4 class="feature-title">Mobile Tickets</h4>
+                <p class="feature-description">
+                    Instant digital tickets delivered to your phone. No printing required, just show and go!
+                </p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="feature-box">
+                <div class="feature-icon">
+                    <i class="fas fa-headset"></i>
+                </div>
+                <h4 class="feature-title">24/7 Support</h4>
+                <p class="feature-description">
+                    Our dedicated support team is always ready to help with any questions or concerns.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action Section -->
+<section class="container my-5 py-5">
+    <div class="text-center" style="background: linear-gradient(135deg, #1a1f3a 0%, #0a0e27 100%); padding: 4rem 2rem; border-radius: 20px;">
+        <h2 class="mb-4" style="font-size: 2.5rem; color: white;">Never Miss Out on Your Favorite Artists</h2>
+        <p class="mb-4" style="font-size: 1.2rem; color: #e0e0e0;">
+            Sign up now and get exclusive access to presale tickets and special offers!
+        </p>
+        <form class="row g-3 justify-content-center" style="max-width: 600px; margin: 0 auto;">
+            <div class="col-auto" style="flex: 1;">
+                <input type="email" class="form-control" placeholder="Enter your email" 
+                       style="padding: 0.8rem; border-radius: 50px; background: var(--card-bg); color: white; border: 2px solid var(--secondary-color);">
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary-custom">Subscribe</button>
+            </div>
+        </form>
+    </div>
+</section>

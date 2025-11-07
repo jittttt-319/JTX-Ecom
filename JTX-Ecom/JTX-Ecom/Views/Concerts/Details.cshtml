@@ -1,0 +1,266 @@
+@model JTX_Ecom.Models.Concert
+
+@{
+    ViewData["Title"] = Model.Title;
+    var availabilityPercent = ViewBag.AvailabilityPercent ?? 0;
+}
+
+<!-- Concert Hero Section -->
+<div class="concert-hero position-relative mb-5">
+    @if (!string.IsNullOrEmpty(Model.ImageUrl))
+    {
+        <div class="hero-image" style="background-image: url('@Model.ImageUrl');"></div>
+        <div class="hero-overlay"></div>
+    }
+    else
+    {
+        <div class="hero-image bg-gradient-primary"></div>
+    }
+    
+    <div class="hero-content container">
+        <div class="row">
+            <div class="col-lg-8">
+                <span class="badge bg-primary mb-3">@Model.Genre</span>
+                <h1 class="display-4 fw-bold text-white mb-3">@Model.Title</h1>
+                <p class="lead text-white mb-4">
+                    <i class="bi bi-person-fill"></i> @Model.Artist
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <!-- Main Content -->
+        <div class="col-lg-8 mb-4">
+            <!-- Concert Info Card -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <h3 class="card-title mb-4">
+                        <i class="bi bi-info-circle-fill text-primary"></i> Event Details
+                    </h3>
+                    
+                    @if (!string.IsNullOrEmpty(Model.Description))
+                    {
+                        <p class="lead mb-4">@Model.Description</p>
+                    }
+
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-start">
+                                <i class="bi bi-calendar-event-fill text-primary fs-4 me-3"></i>
+                                <div>
+                                    <h6 class="mb-1 text-muted">Date</h6>
+                                    <p class="mb-0 fw-bold">@Model.EventDate.ToString("MMMM dd, yyyy")</p>
+                                    <p class="text-muted small mb-0">@Model.EventDate.DayOfWeek</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-start">
+                                <i class="bi bi-clock-fill text-primary fs-4 me-3"></i>
+                                <div>
+                                    <h6 class="mb-1 text-muted">Time</h6>
+                                    <p class="mb-0 fw-bold">@Model.EventTime.ToString("hh:mm tt")</p>
+                                    <p class="text-muted small mb-0">Doors open 30 min earlier</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-start">
+                                <i class="bi bi-building text-primary fs-4 me-3"></i>
+                                <div>
+                                    <h6 class="mb-1 text-muted">Venue</h6>
+                                    <p class="mb-0 fw-bold">@Model.Venue?.Name</p>
+                                    <p class="text-muted small mb-0">Capacity: @Model.Venue?.Capacity.ToString("N0")</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="d-flex align-items-start">
+                                <i class="bi bi-geo-alt-fill text-primary fs-4 me-3"></i>
+                                <div>
+                                    <h6 class="mb-1 text-muted">Location</h6>
+                                    <p class="mb-0 fw-bold">@Model.Venue?.City, @Model.Venue?.State</p>
+                                    <p class="text-muted small mb-0">@Model.Venue?.Address</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Venue Information Card -->
+            @if (Model.Venue != null)
+            {
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h3 class="card-title mb-4">
+                            <i class="bi bi-building text-primary"></i> Venue Information
+                        </h3>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <p class="mb-1"><strong>Venue:</strong></p>
+                                <p class="text-muted">@Model.Venue.Name</p>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <p class="mb-1"><strong>Capacity:</strong></p>
+                                <p class="text-muted">@Model.Venue.Capacity.ToString("N0") people</p>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <p class="mb-1"><strong>Address:</strong></p>
+                                <p class="text-muted">
+                                    @Model.Venue.Address<br>
+                                    @Model.Venue.City, @Model.Venue.State @Model.Venue.ZipCode
+                                </p>
+                            </div>
+                            @if (!string.IsNullOrEmpty(Model.Venue.PhoneNumber))
+                            {
+                                <div class="col-md-6 mb-3">
+                                    <p class="mb-1"><strong>Phone:</strong></p>
+                                    <p class="text-muted">@Model.Venue.PhoneNumber</p>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <!-- Ticket Purchase Card -->
+            <div class="card shadow-sm sticky-top" style="top: 20px;">
+                <div class="card-body">
+                    <h4 class="card-title mb-4">Get Your Tickets</h4>
+                    
+                    <!-- Price -->
+                    <div class="text-center mb-4 p-3 bg-light rounded">
+                        <p class="text-muted mb-1">Starting from</p>
+                        <h2 class="text-primary fw-bold mb-0">$@Model.BasePrice.ToString("N2")</h2>
+                        <p class="text-muted small mb-0">per ticket</p>
+                    </div>
+
+                    <!-- Availability -->
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="text-muted">Availability</span>
+                            <span class="badge bg-@(availabilityPercent > 50 ? "success" : availabilityPercent > 20 ? "warning" : "danger")">
+                                @availabilityPercent% Available
+                            </span>
+                        </div>
+                        
+                        <div class="progress mb-2" style="height: 10px;">
+                            <div class="progress-bar bg-@(availabilityPercent > 50 ? "success" : availabilityPercent > 20 ? "warning" : "danger")" 
+                                 role="progressbar" 
+                                 style="width: @availabilityPercent%"
+                                 aria-valuenow="@availabilityPercent" 
+                                 aria-valuemin="0" 
+                                 aria-valuemax="100">
+                            </div>
+                        </div>
+                        
+                        <p class="text-muted small mb-0">
+                            @Model.AvailableTickets of @Model.TotalTickets tickets remaining
+                        </p>
+                    </div>
+
+                    @if (Model.AvailableTickets > 0)
+                    {
+                        <!-- Purchase Button -->
+                        <button class="btn btn-primary btn-lg w-100 mb-3" disabled>
+                            <i class="bi bi-ticket-perforated-fill"></i> Buy Tickets
+                        </button>
+                        <p class="text-center text-muted small mb-0">
+                            <i class="bi bi-info-circle"></i> Ticket booking coming soon!
+                        </p>
+                    }
+                    else
+                    {
+                        <div class="alert alert-danger mb-0">
+                            <i class="bi bi-exclamation-triangle-fill"></i>
+                            <strong>Sold Out!</strong>
+                            <p class="mb-0 small">This event has no tickets available.</p>
+                        </div>
+                    }
+
+                    <hr class="my-4">
+
+                    <!-- Additional Info -->
+                    <div class="small text-muted">
+                        <p class="mb-2">
+                            <i class="bi bi-shield-check"></i> 
+                            Secure checkout
+                        </p>
+                        <p class="mb-2">
+                            <i class="bi bi-arrow-clockwise"></i> 
+                            Free cancellation up to 24h
+                        </p>
+                        <p class="mb-0">
+                            <i class="bi bi-phone"></i> 
+                            24/7 customer support
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Back to Concerts Button -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <a asp-action="Index" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left"></i> Back to All Concerts
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Custom Styles -->
+<style>
+    .concert-hero {
+        height: 400px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .hero-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+
+    .hero-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.7));
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 1;
+        padding-top: 150px;
+    }
+
+    .bg-gradient-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .sticky-top {
+        position: -webkit-sticky;
+        position: sticky;
+    }
+</style>

@@ -1,3 +1,6 @@
+wwwroot\assets\images\banners\PLACEHOLDER.txt
+wwwroot\assets\images\concerts\PLACEHOLDER.txt
+wwwroot\assets\images\README.md
 wwwroot\css\site.css
 wwwroot\favicon.ico
 wwwroot\js\site.js
@@ -61,7 +64,7 @@ wwwroot\lib\jquery\dist\jquery.slim.js
 wwwroot\lib\jquery\dist\jquery.slim.min.js
 wwwroot\lib\jquery\dist\jquery.slim.min.map
 wwwroot\lib\jquery\LICENSE.txt
-C:\Users\Jit\Downloads\GitHub\JTX-Ecom\JTX-Ecom\JTX-Ecom\wwwroot\css\site.css
+C:\Users\Jit\Downloads\GitHub\JTX-Ecom\JTX-Ecom\JTX-Ecom\wwwroot\assets\images\README.md
 C:\Users\Jit\Downloads\GitHub\JTX-Ecom\JTX-Ecom\JTX-Ecom\wwwroot\favicon.ico
 C:\Users\Jit\Downloads\GitHub\JTX-Ecom\JTX-Ecom\JTX-Ecom\wwwroot\js\site.js
 C:\Users\Jit\Downloads\GitHub\JTX-Ecom\JTX-Ecom\JTX-Ecom\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
@@ -123,3 +126,6 @@ C:\Users\Jit\Downloads\GitHub\JTX-Ecom\JTX-Ecom\JTX-Ecom\wwwroot\lib\jquery\dist
 C:\Users\Jit\Downloads\GitHub\JTX-Ecom\JTX-Ecom\JTX-Ecom\wwwroot\lib\jquery\dist\jquery.slim.min.js
 C:\Users\Jit\Downloads\GitHub\JTX-Ecom\JTX-Ecom\JTX-Ecom\wwwroot\lib\jquery\dist\jquery.slim.min.map
 C:\Users\Jit\Downloads\GitHub\JTX-Ecom\JTX-Ecom\JTX-Ecom\wwwroot\lib\jquery\LICENSE.txt
+C:\Users\Jit\Downloads\GitHub\JTX-Ecom\JTX-Ecom\JTX-Ecom\wwwroot\css\site.css
+C:\Users\Jit\Downloads\GitHub\JTX-Ecom\JTX-Ecom\JTX-Ecom\wwwroot\assets\images\banners\PLACEHOLDER.txt
+C:\Users\Jit\Downloads\GitHub\JTX-Ecom\JTX-Ecom\JTX-Ecom\wwwroot\assets\images\concerts\PLACEHOLDER.txt

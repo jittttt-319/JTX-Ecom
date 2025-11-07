@@ -1,0 +1,219 @@
+@model IEnumerable<JTX_Ecom.Models.Concert>
+
+@{
+    ViewData["Title"] = "All Concerts";
+}
+
+<!-- Page Header -->
+<div class="concerts-header bg-gradient-primary text-white py-5 mb-5">
+    <div class="container">
+        <h1 class="display-4 fw-bold mb-3">?? Upcoming Concerts</h1>
+        <p class="lead mb-0">Discover amazing live music experiences</p>
+    </div>
+</div>
+
+<div class="container">
+    <!-- Search and Filter Section -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <form asp-action="Index" method="get" class="row g-3">
+                        <div class="col-md-5">
+                            <label for="search" class="form-label">Search Concerts</label>
+                            <input type="text" 
+                                   class="form-control" 
+                                   id="search" 
+                                   name="search" 
+                                   value="@ViewBag.CurrentSearch" 
+                                   placeholder="Search by title or artist...">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="genre" class="form-label">Filter by Genre</label>
+                            <select class="form-select" id="genre" name="genre">
+                                <option value="">All Genres</option>
+                                @foreach (var genre in ViewBag.Genres)
+                                {
+                                    <option value="@genre" selected="@(genre == ViewBag.CurrentGenre)">@genre</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-3 d-flex align-items-end">
+                            <button type="submit" class="btn btn-primary me-2">
+                                <i class="bi bi-search"></i> Search
+                            </button>
+                            <a asp-action="Index" class="btn btn-outline-secondary">Clear</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Concert Count -->
+    @if (Model.Any())
+    {
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <p class="text-muted">
+                    <i class="bi bi-music-note-list"></i> 
+                    Showing <strong>@Model.Count()</strong> concert(s)
+                    @if (!string.IsNullOrEmpty(ViewBag.CurrentGenre))
+                    {
+                        <span> in <strong>@ViewBag.CurrentGenre</strong></span>
+                    }
+                </p>
+            </div>
+        </div>
+
+        <!-- Concerts Grid -->
+        <div class="row g-4">
+            @foreach (var concert in Model)
+            {
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 concert-card shadow-sm hover-lift">
+                        <!-- Concert Image -->
+                        <div class="position-relative">
+                            @if (!string.IsNullOrEmpty(concert.ImageUrl))
+                            {
+                                <img src="@concert.ImageUrl" 
+                                     class="card-img-top" 
+                                     alt="@concert.Title"
+                                     onerror="this.src='/assets/images/concerts/placeholder.jpg'">
+                            }
+                            else
+                            {
+                                <div class="concert-placeholder bg-gradient-secondary text-white d-flex align-items-center justify-content-center" style="height: 200px;">
+                                    <i class="bi bi-music-note-beamed" style="font-size: 3rem;"></i>
+                                </div>
+                            }
+                            
+                            <!-- Genre Badge -->
+                            <span class="badge bg-primary position-absolute top-0 end-0 m-2">
+                                @concert.Genre
+                            </span>
+                            
+                            <!-- Availability Badge -->
+                            @{
+                                var availabilityPercent = concert.TotalTickets > 0 
+                                    ? Math.Round((decimal)concert.AvailableTickets / concert.TotalTickets * 100, 0)
+                                    : 0;
+                                var badgeClass = availabilityPercent > 50 ? "success" : 
+                                               availabilityPercent > 20 ? "warning" : "danger";
+                            }
+                            <span class="badge bg-@badgeClass position-absolute bottom-0 start-0 m-2">
+                                @concert.AvailableTickets / @concert.TotalTickets Tickets
+                            </span>
+                        </div>
+
+                        <!-- Concert Info -->
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold mb-2">@concert.Title</h5>
+                            <p class="text-muted mb-2">
+                                <i class="bi bi-person-fill"></i> @concert.Artist
+                            </p>
+                            
+                            <div class="concert-details mb-3">
+                                <p class="mb-1">
+                                    <i class="bi bi-calendar-event text-primary"></i>
+                                    <strong>@concert.EventDate.ToString("MMM dd, yyyy")</strong>
+                                </p>
+                                <p class="mb-1">
+                                    <i class="bi bi-clock text-primary"></i>
+                                    @concert.EventTime.ToString("hh:mm tt")
+                                </p>
+                                <p class="mb-1">
+                                    <i class="bi bi-geo-alt-fill text-primary"></i>
+                                    @concert.Venue?.Name
+                                </p>
+                                <p class="mb-0 text-muted small">
+                                    @concert.Venue?.City, @concert.Venue?.State
+                                </p>
+                            </div>
+
+                            @if (!string.IsNullOrEmpty(concert.Description))
+                            {
+                                <p class="card-text text-muted small mb-3">
+                                    @(concert.Description.Length > 100 
+                                        ? concert.Description.Substring(0, 100) + "..." 
+                                        : concert.Description)
+                                </p>
+                            }
+
+                            <!-- Price and Action Button -->
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <span class="text-muted small">From</span>
+                                    <h4 class="text-primary fw-bold mb-0">
+                                        $@concert.BasePrice.ToString("N2")
+                                    </h4>
+                                </div>
+                                <a asp-action="Details" 
+                                   asp-route-id="@concert.ConcertId" 
+                                   class="btn btn-primary">
+                                    View Details
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <!-- No Results Message -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="alert alert-info text-center py-5">
+                    <i class="bi bi-search" style="font-size: 3rem;"></i>
+                    <h4 class="mt-3">No Concerts Found</h4>
+                    <p class="mb-0">Try adjusting your search or filter criteria</p>
+                    <a asp-action="Index" class="btn btn-primary mt-3">View All Concerts</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<!-- Custom Styles -->
+<style>
+    .concerts-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 0 0 20px 20px;
+    }
+
+    .concert-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border: none;
+        border-radius: 15px;
+        overflow: hidden;
+    }
+
+    .concert-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
+    }
+
+    .concert-card .card-img-top {
+        height: 200px;
+        object-fit: cover;
+    }
+
+    .concert-placeholder {
+        height: 200px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .concert-details i {
+        width: 20px;
+    }
+
+    .bg-gradient-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .bg-gradient-secondary {
+        background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+    }
+</style>
