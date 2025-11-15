@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("JTX-Ecom")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a12d3d03ae4f3a0344ca71c23ef309cbf8f41a94")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+152a28a7d1c016174f5845e9d44e79476c8ae8c4")]
 [assembly: System.Reflection.AssemblyProductAttribute("JTX-Ecom")]
 [assembly: System.Reflection.AssemblyTitleAttribute("JTX-Ecom")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using JTX_Ecom.Models;
 
@@ -7,7 +8,7 @@ namespace JTX_Ecom.Data
     /// Database Context for JTX Concert Ticketing System
     /// This class manages the database connection and entity configurations
     /// </summary>
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<User>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -83,6 +84,13 @@ namespace JTX_Ecom.Data
                 entity.HasKey(o => o.OrderId);
                 entity.Property(o => o.OrderNumber).IsRequired().HasMaxLength(50);
                 entity.Property(o => o.TotalAmount).HasPrecision(18, 2);
+                
+                // Relationship: Order belongs to one User
+                entity.HasOne(o => o.User)
+                    .WithMany(u => u.Orders)
+                    .HasForeignKey(o => o.UserId)
+                    .OnDelete(DeleteBehavior.Cascade);
+                    
                 entity.HasIndex(o => o.OrderNumber).IsUnique();
                 entity.HasIndex(o => o.OrderDate);
                 entity.HasIndex(o => o.CustomerEmail);

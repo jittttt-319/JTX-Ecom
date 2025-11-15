@@ -46,6 +46,10 @@ namespace JTX_Ecom.Models
         [Required]
         public int Quantity { get; set; }
 
+        // User relationship
+        public string? UserId { get; set; }
+        public virtual User? User { get; set; }
+
         // Navigation properties
         public virtual ICollection<Ticket>? Tickets { get; set; }
     }

@@ -231,4 +231,5 @@ C:\Users\Jit\Downloads\GitHub\JTX-Ecom\JTX-Ecom\JTX-Ecom\bin\Debug\net9.0\runtim
 C:\Users\Jit\Downloads\GitHub\JTX-Ecom\JTX-Ecom\JTX-Ecom\bin\Debug\net9.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
 C:\Users\Jit\Downloads\GitHub\JTX-Ecom\JTX-Ecom\JTX-Ecom\obj\Debug\net9.0\JTX-Ecom.csproj.AssemblyReference.cache
 C:\Users\Jit\Downloads\GitHub\JTX-Ecom\JTX-Ecom\JTX-Ecom\obj\Debug\net9.0\JTX-Ecom.csproj.Up2Date
-C:\Users\Jit\Downloads\GitHub\JTX-Ecom\JTX-Ecom\JTX-Ecom\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
+C:\Users\Jit\Downloads\GitHub\JTX-Ecom\JTX-Ecom\JTX-Ecom\bin\Debug\net9.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\Jit\Downloads\GitHub\JTX-Ecom\JTX-Ecom\JTX-Ecom\bin\Debug\net9.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll

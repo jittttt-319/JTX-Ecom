@@ -1,0 +1,88 @@
+@model IEnumerable<JTX_Ecom.Models.Concert>
+
+@{
+    ViewData["Title"] = "Manage Concerts";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row mb-4">
+    <div class="col-md-12">
+        <a asp-action="CreateConcert" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> Add New Concert
+        </a>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h5 class="card-title mb-0">All Concerts</h5>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th>Artist</th>
+                        <th>Genre</th>
+                        <th>Event Date</th>
+                        <th>Venue</th>
+                        <th>Price</th>
+                        <th>Available/Total</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var concert in Model)
+                    {
+                        <tr>
+                            <td>@concert.ConcertId</td>
+                            <td>
+                                <strong>@concert.Title</strong>
+                            </td>
+                            <td>@concert.Artist</td>
+                            <td><span class="badge bg-info">@concert.Genre</span></td>
+                            <td>@concert.EventDate.ToString("MMM dd, yyyy")</td>
+                            <td>@concert.Venue?.Name</td>
+                            <td>$@concert.BasePrice.ToString("N2")</td>
+                            <td>
+                                @concert.AvailableTickets / @concert.TotalTickets
+                                <div class="progress" style="height: 5px;">
+                                    @{
+                                        var percent = concert.TotalTickets > 0 ? (concert.AvailableTickets * 100 / concert.TotalTickets) : 0;
+                                    }
+                                    <div class="progress-bar @(percent > 50 ? "bg-success" : percent > 20 ? "bg-warning" : "bg-danger")" 
+                                         style="width: @percent%"></div>
+                                </div>
+                            </td>
+                            <td>
+                                @if (concert.IsActive)
+                                {
+                                    <span class="badge bg-success">Active</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">Inactive</span>
+                                }
+                            </td>
+                            <td>
+                                <div class="btn-group btn-group-sm">
+                                    <a asp-action="EditConcert" asp-route-id="@concert.ConcertId" 
+                                       class="btn btn-outline-primary" title="Edit">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <a asp-action="DeleteConcert" asp-route-id="@concert.ConcertId" 
+                                       class="btn btn-outline-danger" title="Delete">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

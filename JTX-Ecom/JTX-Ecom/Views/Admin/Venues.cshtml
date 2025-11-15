@@ -1,0 +1,44 @@
+@model IEnumerable<JTX_Ecom.Models.Venue>
+
+@{
+    ViewData["Title"] = "Manage Venues";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="card">
+    <div class="card-header">
+        <h5 class="card-title mb-0">All Venues</h5>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Location</th>
+                        <th>Capacity</th>
+                        <th>Phone</th>
+                        <th>Concerts</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var venue in Model)
+                    {
+                        <tr>
+                            <td>@venue.VenueId</td>
+                            <td><strong>@venue.Name</strong></td>
+                            <td>
+                                @venue.City, @venue.State @venue.ZipCode<br>
+                                <small class="text-muted">@venue.Address</small>
+                            </td>
+                            <td><span class="badge bg-info">@venue.Capacity</span></td>
+                            <td>@venue.PhoneNumber</td>
+                            <td>@venue.Concerts?.Count() concert(s)</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

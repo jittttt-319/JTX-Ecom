@@ -1,0 +1,149 @@
+@model JTX_Ecom.Models.DTOs.ConcertDto
+
+@{
+    ViewData["Title"] = "Edit Concert";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-10 mx-auto">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">Edit Concert - @Model.Title</h5>
+            </div>
+            <div class="card-body">
+                <form asp-action="EditConcert" method="post">
+                    <input type="hidden" asp-for="ConcertId" />
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="mb-3">
+                                <label asp-for="Title" class="form-label"></label>
+                                <input asp-for="Title" class="form-control" />
+                                <span asp-validation-for="Title" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label asp-for="Genre" class="form-label"></label>
+                                <select asp-for="Genre" class="form-select">
+                                    <option value="">Select Genre</option>
+                                    <option value="Rock">Rock</option>
+                                    <option value="Pop">Pop</option>
+                                    <option value="Jazz">Jazz</option>
+                                    <option value="Classical">Classical</option>
+                                    <option value="Electronic">Electronic</option>
+                                    <option value="Hip Hop">Hip Hop</option>
+                                    <option value="Country">Country</option>
+                                    <option value="R&B">R&B</option>
+                                    <option value="Metal">Metal</option>
+                                    <option value="Alternative">Alternative</option>
+                                </select>
+                                <span asp-validation-for="Genre" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Artist" class="form-label"></label>
+                        <input asp-for="Artist" class="form-control" />
+                        <span asp-validation-for="Artist" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Description" class="form-label"></label>
+                        <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label asp-for="EventDate" class="form-label"></label>
+                                <input asp-for="EventDate" type="date" class="form-control" />
+                                <span asp-validation-for="EventDate" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label asp-for="EventTime" class="form-label"></label>
+                                <input asp-for="EventTime" type="time" class="form-control" />
+                                <span asp-validation-for="EventTime" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label asp-for="VenueId" class="form-label"></label>
+                                <select asp-for="VenueId" class="form-select">
+                                    <option value="">Select Venue</option>
+                                    @foreach (var venue in ViewBag.Venues)
+                                    {
+                                        <option value="@venue.VenueId">@venue.Name - @venue.City</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="VenueId" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label asp-for="BasePrice" class="form-label"></label>
+                                <div class="input-group">
+                                    <span class="input-group-text">$</span>
+                                    <input asp-for="BasePrice" type="number" step="0.01" class="form-control" />
+                                </div>
+                                <span asp-validation-for="BasePrice" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label asp-for="TotalTickets" class="form-label"></label>
+                                <input asp-for="TotalTickets" type="number" class="form-control" />
+                                <span asp-validation-for="TotalTickets" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label asp-for="AvailableTickets" class="form-label"></label>
+                                <input asp-for="AvailableTickets" type="number" class="form-control" />
+                                <span asp-validation-for="AvailableTickets" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="ImageUrl" class="form-label"></label>
+                        <input asp-for="ImageUrl" class="form-control" />
+                        <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                        <small class="form-text text-muted">Enter the URL or path to the concert image</small>
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input asp-for="IsActive" class="form-check-input" type="checkbox" />
+                            <label asp-for="IsActive" class="form-check-label">
+                                Active (Concert will be visible to users)
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <button type="submit" class="btn btn-primary me-2">
+                            <i class="bi bi-save"></i> Save Changes
+                        </button>
+                        <a asp-action="Concerts" class="btn btn-secondary">
+                            <i class="bi bi-x-circle"></i> Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
