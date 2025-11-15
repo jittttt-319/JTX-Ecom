@@ -53,7 +53,8 @@ namespace JTX_Ecom.Controllers
                 return View(model);
             }
 
-            var result = await _signInManager.CheckPasswordSignInAsync(user, model.Password, false);
+            // Sign in the user using SignInManager for cookie authentication
+            var result = await _signInManager.PasswordSignInAsync(user, model.Password, isPersistent: false, lockoutOnFailure: false);
             if (!result.Succeeded)
             {
                 ModelState.AddModelError(string.Empty, "Invalid email or password");
@@ -63,10 +64,10 @@ namespace JTX_Ecom.Controllers
             // Get user roles
             var roles = await _userManager.GetRolesAsync(user);
 
-            // Generate JWT token
+            // Generate JWT token (optional, for API access if needed)
             var token = _jwtService.GenerateToken(user.Id, user.Email!, roles.ToList());
 
-            // Store token in cookie
+            // Store token in cookie (optional, for hybrid scenarios)
             Response.Cookies.Append("jwt", token, new CookieOptions
             {
                 HttpOnly = true,

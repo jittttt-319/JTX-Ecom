@@ -23,14 +23,15 @@ namespace JTX_Ecom.Controllers
         /// Display all active concerts with venue information
         /// GET: /Concerts
         /// </summary>
-        public async Task<IActionResult> Index(string? genre, string? search)
+        public async Task<IActionResult> Index(string? genre, string? search, string? sortBy)
         {
             try
             {
                 // Start with all active concerts including venue data
+                // TEMPORARILY REMOVED DATE FILTER FOR DEBUGGING
                 var concertsQuery = _context.Concerts
                     .Include(c => c.Venue)
-                    .Where(c => c.IsActive);
+                    .Where(c => c.IsActive); // Show all active concerts regardless of date
 
                 // Filter by genre if provided
                 if (!string.IsNullOrEmpty(genre))
@@ -41,17 +42,25 @@ namespace JTX_Ecom.Controllers
                 // Search by title or artist if provided
                 if (!string.IsNullOrEmpty(search))
                 {
+                    search = search.Trim();
                     concertsQuery = concertsQuery.Where(c => 
                         c.Title.Contains(search) || 
-                        c.Artist.Contains(search));
+                        c.Artist.Contains(search) ||
+                        c.Description.Contains(search));
                 }
 
-                // Order by event date
-                var concerts = await concertsQuery
-                    .OrderBy(c => c.EventDate)
-                    .ToListAsync();
+                // Apply sorting
+                concertsQuery = sortBy?.ToLower() switch
+                {
+                    "price-low" => concertsQuery.OrderBy(c => c.BasePrice),
+                    "price-high" => concertsQuery.OrderByDescending(c => c.BasePrice),
+                    "popular" => concertsQuery.OrderByDescending(c => c.TotalTickets - c.AvailableTickets), // Most tickets sold
+                    _ => concertsQuery.OrderBy(c => c.EventDate) // Default: sort by date
+                };
 
-                // Get distinct genres for filter dropdown
+                var concerts = await concertsQuery.ToListAsync();
+
+                // Get distinct genres for filter dropdown (from all active concerts)
                 ViewBag.Genres = await _context.Concerts
                     .Where(c => c.IsActive)
                     .Select(c => c.Genre)
@@ -61,13 +70,22 @@ namespace JTX_Ecom.Controllers
 
                 ViewBag.CurrentGenre = genre;
                 ViewBag.CurrentSearch = search;
+                ViewBag.CurrentSort = sortBy;
+
+                // Log for debugging
+                _logger.LogInformation($"Found {concerts.Count} concerts. Current time: {DateTime.Now}");
+                if (concerts.Any())
+                {
+                    _logger.LogInformation($"First concert: {concerts.First().Title} on {concerts.First().EventDate}");
+                }
 
                 return View(concerts);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error loading concerts");
-                return View("Error");
+                TempData["ErrorMessage"] = "An error occurred while loading concerts. Please try again.";
+                return View(new List<Concert>());
             }
         }
 
@@ -98,12 +116,25 @@ namespace JTX_Ecom.Controllers
                     ? Math.Round((decimal)concert.AvailableTickets / concert.TotalTickets * 100, 1)
                     : 0;
 
+                // Get related concerts (same genre or same venue)
+                var relatedConcerts = await _context.Concerts
+                    .Include(c => c.Venue)
+                    .Where(c => c.IsActive 
+                           && c.ConcertId != id 
+                           && (c.Genre == concert.Genre || c.VenueId == concert.VenueId))
+                    .OrderBy(c => c.EventDate)
+                    .Take(3)
+                    .ToListAsync();
+
+                ViewBag.RelatedConcerts = relatedConcerts;
+
                 return View(concert);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error loading concert details for ID {ConcertId}", id);
-                return View("Error");
+                TempData["ErrorMessage"] = "An error occurred while loading concert details.";
+                return RedirectToAction(nameof(Index));
             }
         }
     }

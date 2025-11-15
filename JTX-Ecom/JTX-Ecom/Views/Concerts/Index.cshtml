@@ -4,157 +4,285 @@
     ViewData["Title"] = "All Concerts";
 }
 
-<!-- Page Header -->
-<div class="concerts-header bg-gradient-primary text-white py-5 mb-5">
-    <div class="container">
-        <h1 class="display-4 fw-bold mb-3">?? Upcoming Concerts</h1>
-        <p class="lead mb-0">Discover amazing live music experiences</p>
-    </div>
-</div>
-
-<div class="container">
-    <!-- Search and Filter Section -->
-    <div class="row mb-4">
-        <div class="col-md-12">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <form asp-action="Index" method="get" class="row g-3">
-                        <div class="col-md-5">
-                            <label for="search" class="form-label">Search Concerts</label>
-                            <input type="text" 
-                                   class="form-control" 
-                                   id="search" 
-                                   name="search" 
-                                   value="@ViewBag.CurrentSearch" 
-                                   placeholder="Search by title or artist...">
-                        </div>
-                        <div class="col-md-4">
-                            <label for="genre" class="form-label">Filter by Genre</label>
-                            <select class="form-select" id="genre" name="genre">
-                                <option value="">All Genres</option>
-                                @foreach (var genre in ViewBag.Genres)
+<!-- Hero Section with Search -->
+<div class="concerts-hero">
+    <div class="container py-5">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <h1 class="display-3 fw-bold text-white mb-3">
+                    <i class="bi bi-music-note-beamed"></i> Discover Live Music
+                </h1>
+                <p class="lead text-white-50 mb-4">
+                    Experience unforgettable concerts across Malaysia. Book your tickets today!
+                </p>
+                <div class="d-flex gap-2">
+                    <span class="badge bg-white bg-opacity-25 text-white px-3 py-2">
+                        <i class="bi bi-calendar-check"></i> @Model.Count() Events
+                    </span>
+                    <span class="badge bg-white bg-opacity-25 text-white px-3 py-2">
+                        <i class="bi bi-geo-alt"></i> Multiple Venues
+                    </span>
+                    <span class="badge bg-white bg-opacity-25 text-white px-3 py-2">
+                        <i class="bi bi-shield-check"></i> Secure Booking
+                    </span>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <!-- Quick Search Card -->
+                <div class="card shadow-lg border-0" style="border-radius: 20px;">
+                    <div class="card-body p-4">
+                        <h5 class="mb-3"><i class="bi bi-search"></i> Find Your Concert</h5>
+                        <form asp-action="Index" method="get" id="quickSearchForm">
+                            <div class="mb-3">
+                                <input type="text" 
+                                       class="form-control form-control-lg" 
+                                       name="search" 
+                                       value="@ViewBag.CurrentSearch" 
+                                       placeholder="Search by title or artist..."
+                                       style="border-radius: 10px;">
+                            </div>
+                            <div class="row g-2">
+                                <div class="col-md-6">
+                                    <select class="form-select" name="genre" id="genreFilter" style="border-radius: 10px;">
+                                        <option value="">All Genres</option>
+                                        @foreach (var genre in ViewBag.Genres)
+                                        {
+                                            <option value="@genre" selected="@(genre == ViewBag.CurrentGenre)">@genre</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <select class="form-select" name="sortBy" id="sortByFilter" style="border-radius: 10px;">
+                                        <option value="date" selected="@(ViewBag.CurrentSort == "date" || string.IsNullOrEmpty(ViewBag.CurrentSort))">Sort by Date</option>
+                                        <option value="price-low" selected="@(ViewBag.CurrentSort == "price-low")">Price: Low to High</option>
+                                        <option value="price-high" selected="@(ViewBag.CurrentSort == "price-high")">Price: High to Low</option>
+                                        <option value="popular" selected="@(ViewBag.CurrentSort == "popular")">Most Popular</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="d-grid gap-2 mt-3">
+                                <button type="submit" class="btn btn-primary btn-lg" style="border-radius: 10px;">
+                                    <i class="bi bi-search"></i> Search Concerts
+                                </button>
+                                @if (!string.IsNullOrEmpty(ViewBag.CurrentSearch) || !string.IsNullOrEmpty(ViewBag.CurrentGenre))
                                 {
-                                    <option value="@genre" selected="@(genre == ViewBag.CurrentGenre)">@genre</option>
+                                    <a asp-action="Index" class="btn btn-outline-secondary" style="border-radius: 10px;">
+                                        <i class="bi bi-x-circle"></i> Clear Filters
+                                    </a>
                                 }
-                            </select>
-                        </div>
-                        <div class="col-md-3 d-flex align-items-end">
-                            <button type="submit" class="btn btn-primary me-2">
-                                <i class="bi bi-search"></i> Search
-                            </button>
-                            <a asp-action="Index" class="btn btn-outline-secondary">Clear</a>
-                        </div>
-                    </form>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Concert Count -->
+<div class="container py-5">
+    <!-- Genre Pills Navigation -->
+    @if (ViewBag.Genres != null && ((List<string>)ViewBag.Genres).Any())
+    {
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="d-flex flex-wrap gap-2 justify-content-center">
+                    <a asp-action="Index" 
+                       class="genre-pill @(string.IsNullOrEmpty(ViewBag.CurrentGenre) ? "active" : "")">
+                        <i class="bi bi-grid-fill"></i> All
+                    </a>
+                    @foreach (var genre in ViewBag.Genres)
+                    {
+                        <a asp-action="Index" 
+                           asp-route-genre="@genre"
+                           asp-route-search="@ViewBag.CurrentSearch"
+                           class="genre-pill @(genre == ViewBag.CurrentGenre ? "active" : "")">
+                            @switch (genre)
+                            {
+                                case "Rock": <i class="bi bi-lightning-fill"></i> break;
+                                case "Pop": <i class="bi bi-star-fill"></i> break;
+                                case "Jazz": <i class="bi bi-music-note"></i> break;
+                                case "Electronic": <i class="bi bi-soundwave"></i> break;
+                                case "Hip Hop": <i class="bi bi-mic-fill"></i> break;
+                                case "Country": <i class="bi bi-sun-fill"></i> break;
+                                case "Alternative": <i class="bi bi-vinyl-fill"></i> break;
+                                case "World Music": <i class="bi bi-globe-americas"></i> break;
+                                default: <i class="bi bi-music-note-beamed"></i> break;
+                            }
+                            @genre
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+
+    <!-- Results Header -->
     @if (Model.Any())
     {
-        <div class="row mb-3">
-            <div class="col-md-12">
-                <p class="text-muted">
-                    <i class="bi bi-music-note-list"></i> 
-                    Showing <strong>@Model.Count()</strong> concert(s)
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <h4 class="mb-0">
+                    <i class="bi bi-music-note-list text-primary"></i> 
+                    <span class="fw-bold">@Model.Count()</span> Concert@(Model.Count() != 1 ? "s" : "") Found
                     @if (!string.IsNullOrEmpty(ViewBag.CurrentGenre))
                     {
-                        <span> in <strong>@ViewBag.CurrentGenre</strong></span>
+                        <span class="text-muted"> in @ViewBag.CurrentGenre</span>
                     }
-                </p>
+                </h4>
+            </div>
+            <div class="col-md-6 text-md-end">
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-outline-secondary active" id="gridView">
+                        <i class="bi bi-grid-3x3-gap-fill"></i> Grid
+                    </button>
+                    <button type="button" class="btn btn-outline-secondary" id="listView">
+                        <i class="bi bi-list-ul"></i> List
+                    </button>
+                </div>
             </div>
         </div>
 
         <!-- Concerts Grid -->
-        <div class="row g-4">
+        <div class="row g-4" id="concertsContainer">
             @foreach (var concert in Model)
             {
-                <div class="col-md-6 col-lg-4">
-                    <div class="card h-100 concert-card shadow-sm hover-lift">
+                var availabilityPercent = concert.TotalTickets > 0 
+                    ? Math.Round((decimal)concert.AvailableTickets / concert.TotalTickets * 100, 0)
+                    : 0;
+                var badgeClass = availabilityPercent > 50 ? "success" : 
+                               availabilityPercent > 20 ? "warning" : "danger";
+                var isSoldOut = concert.AvailableTickets == 0;
+                var isAlmostSoldOut = availabilityPercent < 20 && !isSoldOut;
+                
+                <div class="col-lg-4 col-md-6 concert-item">
+                    <div class="card concert-card h-100 @(isSoldOut ? "sold-out" : "")" data-aos="fade-up">
                         <!-- Concert Image -->
-                        <div class="position-relative">
+                        <div class="concert-image-wrapper position-relative">
                             @if (!string.IsNullOrEmpty(concert.ImageUrl))
                             {
                                 <img src="@concert.ImageUrl" 
-                                     class="card-img-top" 
+                                     class="card-img-top concert-image" 
                                      alt="@concert.Title"
                                      onerror="this.src='/assets/images/concerts/placeholder.jpg'">
                             }
                             else
                             {
-                                <div class="concert-placeholder bg-gradient-secondary text-white d-flex align-items-center justify-content-center" style="height: 200px;">
-                                    <i class="bi bi-music-note-beamed" style="font-size: 3rem;"></i>
+                                <div class="concert-placeholder">
+                                    <i class="bi bi-music-note-beamed"></i>
+                                </div>
+                            }
+                            
+                            @if (isSoldOut)
+                            {
+                                <div class="sold-out-overlay">
+                                    <span class="sold-out-badge">
+                                        <i class="bi bi-x-circle"></i> SOLD OUT
+                                    </span>
+                                </div>
+                            }
+                            else if (isAlmostSoldOut)
+                            {
+                                <div class="position-absolute top-0 start-0 m-3">
+                                    <span class="badge bg-danger pulse-badge">
+                                        <i class="bi bi-fire"></i> Selling Fast!
+                                    </span>
                                 </div>
                             }
                             
                             <!-- Genre Badge -->
-                            <span class="badge bg-primary position-absolute top-0 end-0 m-2">
-                                @concert.Genre
+                            <span class="badge bg-dark bg-opacity-75 position-absolute top-0 end-0 m-3">
+                                <i class="bi bi-music-note"></i> @concert.Genre
                             </span>
                             
-                            <!-- Availability Badge -->
-                            @{
-                                var availabilityPercent = concert.TotalTickets > 0 
-                                    ? Math.Round((decimal)concert.AvailableTickets / concert.TotalTickets * 100, 0)
-                                    : 0;
-                                var badgeClass = availabilityPercent > 50 ? "success" : 
-                                               availabilityPercent > 20 ? "warning" : "danger";
-                            }
-                            <span class="badge bg-@badgeClass position-absolute bottom-0 start-0 m-2">
-                                @concert.AvailableTickets / @concert.TotalTickets Tickets
-                            </span>
-                        </div>
-
-                        <!-- Concert Info -->
-                        <div class="card-body">
-                            <h5 class="card-title fw-bold mb-2">@concert.Title</h5>
-                            <p class="text-muted mb-2">
-                                <i class="bi bi-person-fill"></i> @concert.Artist
-                            </p>
-                            
-                            <div class="concert-details mb-3">
-                                <p class="mb-1">
-                                    <i class="bi bi-calendar-event text-primary"></i>
-                                    <strong>@concert.EventDate.ToString("MMM dd, yyyy")</strong>
-                                </p>
-                                <p class="mb-1">
-                                    <i class="bi bi-clock text-primary"></i>
-                                    @concert.EventTime.ToString("hh:mm tt")
-                                </p>
-                                <p class="mb-1">
-                                    <i class="bi bi-geo-alt-fill text-primary"></i>
-                                    @concert.Venue?.Name
-                                </p>
-                                <p class="mb-0 text-muted small">
-                                    @concert.Venue?.City, @concert.Venue?.State
-                                </p>
-                            </div>
-
-                            @if (!string.IsNullOrEmpty(concert.Description))
-                            {
-                                <p class="card-text text-muted small mb-3">
-                                    @(concert.Description.Length > 100 
-                                        ? concert.Description.Substring(0, 100) + "..." 
-                                        : concert.Description)
-                                </p>
-                            }
-
-                            <!-- Price and Action Button -->
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <span class="text-muted small">From</span>
-                                    <h4 class="text-primary fw-bold mb-0">
-                                        $@concert.BasePrice.ToString("N2")
-                                    </h4>
-                                </div>
-                                <a asp-action="Details" 
-                                   asp-route-id="@concert.ConcertId" 
-                                   class="btn btn-primary">
-                                    View Details
+                            <!-- Quick View Button -->
+                            <div class="quick-view-btn">
+                                <a asp-action="Details" asp-route-id="@concert.ConcertId" class="btn btn-light btn-sm">
+                                    <i class="bi bi-eye"></i> Quick View
                                 </a>
                             </div>
                         </div>
+
+                        <!-- Concert Info -->
+                        <div class="card-body d-flex flex-column">
+                            <div class="mb-3">
+                                <h5 class="card-title fw-bold mb-2">@concert.Title</h5>
+                                <p class="text-muted mb-2">
+                                    <i class="bi bi-person-fill text-primary"></i> 
+                                    <strong>@concert.Artist</strong>
+                                </p>
+                            </div>
+                            
+                            <div class="concert-info mb-3">
+                                <div class="info-item">
+                                    <i class="bi bi-calendar-event text-primary"></i>
+                                    <div>
+                                        <small class="text-muted d-block">Date</small>
+                                        <strong>@concert.EventDate.ToString("ddd, dd MMM yyyy")</strong>
+                                    </div>
+                                </div>
+                                <div class="info-item">
+                                    <i class="bi bi-clock text-primary"></i>
+                                    <div>
+                                        <small class="text-muted d-block">Time</small>
+                                        <strong>@concert.EventTime.ToString("hh:mm tt")</strong>
+                                    </div>
+                                </div>
+                                <div class="info-item">
+                                    <i class="bi bi-geo-alt-fill text-primary"></i>
+                                    <div>
+                                        <small class="text-muted d-block">Venue</small>
+                                        <strong>@concert.Venue?.Name</strong>
+                                        <small class="text-muted d-block">@concert.Venue?.City</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Availability Bar -->
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                    <small class="text-muted">Availability</small>
+                                    <small class="fw-bold">@concert.AvailableTickets / @concert.TotalTickets</small>
+                                </div>
+                                <div class="progress" style="height: 6px;">
+                                    <div class="progress-bar bg-@badgeClass" 
+                                         role="progressbar" 
+                                         style="width: @availabilityPercent%"
+                                         aria-valuenow="@availabilityPercent" 
+                                         aria-valuemin="0" 
+                                         aria-valuemax="100">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Price and Action -->
+                            <div class="mt-auto">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <small class="text-muted d-block">Starting from</small>
+                                        <h4 class="text-primary fw-bold mb-0">
+                                            RM @concert.BasePrice.ToString("N2")
+                                        </h4>
+                                    </div>
+                                    @if (isSoldOut)
+                                    {
+                                        <button class="btn btn-secondary" disabled>
+                                            <i class="bi bi-x-circle"></i> Sold Out
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <a asp-action="Details" 
+                                           asp-route-id="@concert.ConcertId" 
+                                           class="btn btn-primary">
+                                            <i class="bi bi-ticket-perforated"></i> Get Tickets
+                                        </a>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Hover Effect Overlay -->
+                        <div class="card-hover-effect"></div>
                     </div>
                 </div>
             }
@@ -162,58 +290,345 @@
     }
     else
     {
-        <!-- No Results Message -->
+        <!-- No Results -->
         <div class="row">
-            <div class="col-md-12">
-                <div class="alert alert-info text-center py-5">
-                    <i class="bi bi-search" style="font-size: 3rem;"></i>
-                    <h4 class="mt-3">No Concerts Found</h4>
-                    <p class="mb-0">Try adjusting your search or filter criteria</p>
-                    <a asp-action="Index" class="btn btn-primary mt-3">View All Concerts</a>
+            <div class="col-12">
+                <div class="no-results text-center py-5">
+                    <div class="mb-4">
+                        <i class="bi bi-search" style="font-size: 80px; color: var(--bs-gray-400);"></i>
+                    </div>
+                    <h3 class="mb-3">No Concerts Found</h3>
+                    <p class="text-muted mb-4">
+                        @if (!string.IsNullOrEmpty(ViewBag.CurrentSearch))
+                        {
+                            <span>We couldn't find any concerts matching "<strong>@ViewBag.CurrentSearch</strong>"</span>
+                        }
+                        else if (!string.IsNullOrEmpty(ViewBag.CurrentGenre))
+                        {
+                            <span>No concerts found in <strong>@ViewBag.CurrentGenre</strong> genre</span>
+                        }
+                        else
+                        {
+                            <span>No concerts are currently available</span>
+                        }
+                    </p>
+                    <a asp-action="Index" class="btn btn-primary btn-lg">
+                        <i class="bi bi-arrow-counterclockwise"></i> View All Concerts
+                    </a>
                 </div>
             </div>
         </div>
     }
+
+    <!-- Newsletter Section -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <div class="newsletter-card">
+                <div class="row align-items-center">
+                    <div class="col-lg-6 mb-3 mb-lg-0">
+                        <h3 class="text-white mb-2">
+                            <i class="bi bi-envelope-heart"></i> Never Miss a Beat!
+                        </h3>
+                        <p class="text-white-50 mb-0">
+                            Subscribe to get notified about upcoming concerts and exclusive offers
+                        </p>
+                    </div>
+                    <div class="col-lg-6">
+                        <form class="newsletter-form">
+                            <div class="input-group input-group-lg">
+                                <input type="email" 
+                                       class="form-control" 
+                                       placeholder="Enter your email"
+                                       required>
+                                <button class="btn btn-light" type="submit">
+                                    <i class="bi bi-send"></i> Subscribe
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<!-- Custom Styles -->
+@section Styles {
 <style>
-    .concerts-header {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        border-radius: 0 0 20px 20px;
+    :root {
+        --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+        --card-shadow-hover: 0 12px 24px rgba(0, 0, 0, 0.15);
     }
 
-    .concert-card {
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        border: none;
-        border-radius: 15px;
+    .concerts-hero {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        position: relative;
         overflow: hidden;
     }
 
-    .concert-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
+    .concerts-hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="2" fill="white" opacity="0.1"/></svg>');
+        opacity: 0.3;
     }
 
-    .concert-card .card-img-top {
-        height: 200px;
+    .genre-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1.25rem;
+        background: white;
+        border: 2px solid #e9ecef;
+        border-radius: 50px;
+        text-decoration: none;
+        color: #495057;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+    .genre-pill:hover {
+        border-color: #667eea;
+        color: #667eea;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+    }
+
+    .genre-pill.active {
+        background: var(--primary-gradient);
+        border-color: transparent;
+        color: white;
+    }
+
+    .concert-card {
+        border: none;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: var(--card-shadow);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+    }
+
+    .concert-card:hover {
+        transform: translateY(-8px);
+        box-shadow: var(--card-shadow-hover);
+    }
+
+    .concert-card.sold-out {
+        opacity: 0.7;
+    }
+
+    .concert-image-wrapper {
+        position: relative;
+        overflow: hidden;
+        height: 240px;
+    }
+
+    .concert-image {
+        width: 100%;
+        height: 100%;
         object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+
+    .concert-card:hover .concert-image {
+        transform: scale(1.1);
     }
 
     .concert-placeholder {
-        height: 200px;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        width: 100%;
+        height: 100%;
+        background: var(--primary-gradient);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 4rem;
     }
 
-    .concert-details i {
-        width: 20px;
+    .sold-out-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.7);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 2;
     }
 
-    .bg-gradient-primary {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    .sold-out-badge {
+        background: #dc3545;
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border-radius: 50px;
+        font-weight: bold;
+        font-size: 1.1rem;
     }
 
-    .bg-gradient-secondary {
-        background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+    .pulse-badge {
+        animation: pulse 2s infinite;
+    }
+
+    @@keyframes pulse {
+        0%, 100% { opacity: 1; transform: scale(1); }
+        50% { opacity: 0.8; transform: scale(1.05); }
+    }
+
+    .quick-view-btn {
+        position: absolute;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%) translateY(10px);
+        opacity: 0;
+        transition: all 0.3s ease;
+    }
+
+    .concert-card:hover .quick-view-btn {
+        transform: translateX(-50%) translateY(0);
+        opacity: 1;
+    }
+
+    .concert-info .info-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+        padding: 0.5rem 0;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .concert-info .info-item:last-child {
+        border-bottom: none;
+    }
+
+    .concert-info i {
+        font-size: 1.25rem;
+        margin-top: 0.25rem;
+    }
+
+    .newsletter-card {
+        background: var(--primary-gradient);
+        border-radius: 20px;
+        padding: 3rem;
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+    }
+
+    .newsletter-form input {
+        border: none;
+        border-radius: 50px 0 0 50px;
+        padding: 0.75rem 1.5rem;
+    }
+
+    .newsletter-form button {
+        border-radius: 0 50px 50px 0;
+        padding: 0.75rem 1.5rem;
+        font-weight: 600;
+    }
+
+    .no-results {
+        background: #f8f9fa;
+        border-radius: 20px;
+    }
+
+    .card-hover-effect {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        pointer-events: none;
+    }
+
+    .concert-card:hover .card-hover-effect {
+        opacity: 1;
+    }
+
+    /* List View Styles */
+    .list-view .concert-item {
+        width: 100%;
+        max-width: 100%;
+        flex: 0 0 100%;
+    }
+
+    .list-view .concert-card {
+        flex-direction: row;
+    }
+
+    .list-view .concert-image-wrapper {
+        width: 300px;
+        height: auto;
+        flex-shrink: 0;
+    }
+
+    .list-view .card-body {
+        flex: 1;
+    }
+
+    @@media (max-width: 768px) {
+        .concert-card {
+            margin-bottom: 1rem;
+        }
+
+        .newsletter-card {
+            padding: 2rem 1.5rem;
+        }
+
+        .list-view .concert-card {
+            flex-direction: column;
+        }
+
+        .list-view .concert-image-wrapper {
+            width: 100%;
+            height: 240px;
+        }
     }
 </style>
+}
+
+@section Scripts {
+<script>
+    // Grid/List View Toggle
+    document.getElementById('gridView')?.addEventListener('click', function() {
+        document.getElementById('concertsContainer').classList.remove('list-view');
+        this.classList.add('active');
+        document.getElementById('listView').classList.remove('active');
+        localStorage.setItem('concertsView', 'grid');
+    });
+
+    document.getElementById('listView')?.addEventListener('click', function() {
+        document.getElementById('concertsContainer').classList.add('list-view');
+        this.classList.add('active');
+        document.getElementById('gridView').classList.remove('active');
+        localStorage.setItem('concertsView', 'list');
+    });
+
+    // Restore saved view preference
+    const savedView = localStorage.getItem('concertsView');
+    if (savedView === 'list') {
+        document.getElementById('listView')?.click();
+    }
+
+    // Newsletter subscription
+    document.querySelector('.newsletter-form')?.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const email = this.querySelector('input[type="email"]').value;
+        alert('Thank you for subscribing! We\'ll keep you updated about upcoming concerts.');
+        this.reset();
+    });
+
+    // Smooth scroll to concerts
+    const hash = window.location.hash;
+    if (hash === '#concerts') {
+        document.getElementById('concertsContainer')?.scrollIntoView({ behavior: 'smooth' });
+    }
+</script>
+}

@@ -15,10 +15,27 @@
                         <p class="text-muted">Login to your account</p>
                     </div>
 
+                    @* Only show success messages that are registration-related *@
                     @if (TempData["SuccessMessage"] != null)
                     {
-                        <div class="alert alert-success alert-dismissible fade show">
-                            @TempData["SuccessMessage"]
+                        var message = TempData["SuccessMessage"]?.ToString() ?? "";
+                        // Only show registration success or password reset messages
+                        if (message.Contains("Registration successful") || 
+                            message.Contains("Password") || 
+                            message.Contains("account"))
+                        {
+                            <div class="alert alert-success alert-dismissible fade show">
+                                @message
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        }
+                    }
+                    
+                    @* Show info message if user needs to login to continue *@
+                    @if (ViewData["ReturnUrl"] != null && !string.IsNullOrEmpty(ViewData["ReturnUrl"]?.ToString()))
+                    {
+                        <div class="alert alert-info alert-dismissible fade show">
+                            <i class="bi bi-info-circle"></i> Please log in to continue.
                             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                         </div>
                     }

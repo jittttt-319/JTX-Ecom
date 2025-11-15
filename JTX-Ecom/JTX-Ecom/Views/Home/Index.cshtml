@@ -4,174 +4,867 @@
     ViewData["Title"] = "Home";
 }
 
-<!-- Hero Section -->
-<section class="hero-section">
-    <div class="hero-content">
-        <h1 class="hero-title">Experience Live Music</h1>
-        <p class="hero-subtitle">Book tickets to the hottest concerts and music festivals</p>
-        <div class="mt-4">
-            <a asp-controller="Concerts" asp-action="Index" class="btn btn-primary-custom me-3">Browse Events</a>
-            <a href="#features" class="btn btn-outline-custom">Learn More</a>
+<!-- Hero Section - Stunning Visual -->
+<section class="modern-hero">
+    <div class="hero-background"></div>
+    <div class="hero-overlay"></div>
+    <div class="container hero-content-wrapper">
+        <div class="row align-items-center min-vh-75">
+            <div class="col-lg-6 text-center text-lg-start">
+                <div class="hero-badge animate-fadeInDown">
+                    <i class="bi bi-star-fill"></i> Malaysia's #1 Concert Ticketing Platform
+                </div>
+                <h1 class="hero-title animate-fadeInUp">
+                    Experience the
+                    <span class="text-gradient">Magic of Live Music</span>
+                </h1>
+                <p class="hero-subtitle animate-fadeInUp">
+                    Book tickets to Malaysia's hottest concerts, festivals, and live events. 
+                    Secure, fast, and easy - your next unforgettable experience awaits!
+                </p>
+                <div class="hero-actions animate-fadeInUp">
+                    <a asp-controller="Concerts" asp-action="Index" class="btn btn-primary btn-lg me-3">
+                        <i class="bi bi-ticket-perforated"></i> Explore Events
+                    </a>
+                    <a href="#features" class="btn btn-outline-primary btn-lg">
+                        <i class="bi bi-play-circle"></i> Learn More
+                    </a>
+                </div>
+                
+                <!-- Stats -->
+                <div class="hero-stats mt-5">
+                    <div class="stat-item">
+                        <h3 class="stat-number">10K+</h3>
+                        <p class="stat-label">Happy Fans</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3 class="stat-number">500+</h3>
+                        <p class="stat-label">Events Hosted</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3 class="stat-number">50+</h3>
+                        <p class="stat-label">Top Venues</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6 d-none d-lg-block">
+                <div class="hero-image-container animate-fadeInRight">
+                    <!-- Floating Concert Cards -->
+                    <div class="floating-card card-1">
+                        <i class="bi bi-music-note-beamed fs-1 text-gradient"></i>
+                        <p class="mb-0 fw-bold">Live Concerts</p>
+                    </div>
+                    <div class="floating-card card-2">
+                        <i class="bi bi-people fs-1 text-gradient-accent"></i>
+                        <p class="mb-0 fw-bold">Music Festivals</p>
+                    </div>
+                    <div class="floating-card card-3">
+                        <i class="bi bi-star fs-1" style="color: var(--accent-gold);"></i>
+                        <p class="mb-0 fw-bold">VIP Experience</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Scroll Indicator -->
+    <div class="scroll-indicator">
+        <i class="bi bi-chevron-down"></i>
+    </div>
+</section>
+
+<!-- Quick Search Bar -->
+<section class="search-section">
+    <div class="container">
+        <div class="search-card">
+            <form asp-controller="Concerts" asp-action="Index" method="get" class="search-form">
+                <div class="row g-3">
+                    <div class="col-md-5">
+                        <div class="input-with-icon">
+                            <i class="bi bi-search"></i>
+                            <input type="text" name="search" class="form-control" placeholder="Search concerts, artists...">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="input-with-icon">
+                            <i class="bi bi-filter"></i>
+                            <select name="genre" class="form-select">
+                                <option value="">All Genres</option>
+                                <option value="Rock">Rock</option>
+                                <option value="Pop">Pop</option>
+                                <option value="Jazz">Jazz</option>
+                                <option value="Electronic">Electronic</option>
+                                <option value="Hip Hop">Hip Hop</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="bi bi-search"></i> Search Events
+                        </button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </section>
 
-<!-- Search Section -->
-<div class="container">
-    <div class="search-box">
-        <form asp-controller="Concerts" asp-action="Index" method="get">
-            <input type="text" name="search" class="search-input" placeholder="Search for concerts, artists, or venues...">
-            <button type="submit" class="search-btn"><i class="fas fa-search"></i> Search</button>
-        </form>
-    </div>
-</div>
-
 <!-- Featured Concerts Section -->
-<section id="concerts" class="container my-5">
-    <h2 class="section-title">Featured Concerts</h2>
-    
-    @if (Model != null && Model.Any())
-    {
-        <div class="row">
-            @foreach (var concert in Model)
-            {
-                <div class="col-md-4 mb-4">
-                    <div class="concert-card">
-                        <img src="@concert.ImageUrl" alt="@concert.Title" class="concert-card-img" 
-                             onerror="this.style.background='linear-gradient(135deg, #8338ec, #ff006e)'; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22250%22%3E%3Crect fill=%22%238338ec%22 width=%22600%22 height=%22250%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22Arial%22 font-size=%2224%22 fill=%22white%22%3E@concert.Title%3C/text%3E%3C/svg%3E';">
-                        
-                        <!-- Genre Badge -->
-                        <span class="badge bg-primary position-absolute top-0 end-0 m-2">
-                            @concert.Genre
-                        </span>
-                        
-                        <div class="concert-card-body">
-                            <div class="concert-date">
-                                <i class="far fa-calendar"></i> @concert.EventDate.ToString("ddd, MMM dd, yyyy").ToUpper()
+<section class="featured-concerts py-5">
+    <div class="container">
+        <div class="section-header text-center mb-5">
+            <span class="section-badge">This Month's Highlights</span>
+            <h2 class="section-title-modern">
+                <span class="text-gradient">Featured</span> Concerts
+            </h2>
+            <p class="section-subtitle">Don't miss these incredible live music experiences</p>
+        </div>
+        
+        @if (Model != null && Model.Any())
+        {
+            <div class="row g-4">
+                @foreach (var concert in Model.Take(6))
+                {
+                    var availabilityPercent = concert.TotalTickets > 0 
+                        ? Math.Round((decimal)concert.AvailableTickets / concert.TotalTickets * 100, 0)
+                        : 0;
+                    var isSoldOut = concert.AvailableTickets == 0;
+                    var isLowStock = availabilityPercent < 20 && !isSoldOut;
+                    
+                    <div class="col-lg-4 col-md-6">
+                        <div class="modern-concert-card" data-aos="fade-up" data-aos-delay="@(Model.ToList().IndexOf(concert) * 100)">
+                            <!-- Concert Image -->
+                            <div class="concert-image-wrapper">
+                                @if (!string.IsNullOrEmpty(concert.ImageUrl))
+                                {
+                                    <img src="@concert.ImageUrl" alt="@concert.Title" class="concert-image">
+                                }
+                                else
+                                {
+                                    <div class="concert-image-placeholder">
+                                        <i class="bi bi-music-note-beamed"></i>
+                                    </div>
+                                }
+                                
+                                <!-- Status Badges -->
+                                @if (isSoldOut)
+                                {
+                                    <span class="status-badge sold-out">SOLD OUT</span>
+                                }
+                                else if (isLowStock)
+                                {
+                                    <span class="status-badge low-stock">SELLING FAST</span>
+                                }
+                                
+                                <!-- Genre Badge -->
+                                <span class="genre-badge">@concert.Genre</span>
+                                
+                                <!-- Quick Action Button -->
+                                <div class="quick-action">
+                                    <a asp-controller="Concerts" asp-action="Details" asp-route-id="@concert.ConcertId" 
+                                       class="btn btn-sm btn-light">
+                                        <i class="bi bi-eye"></i> View Details
+                                    </a>
+                                </div>
                             </div>
-                            <h3 class="concert-title">@concert.Title</h3>
-                            <p class="text-muted mb-2">
-                                <i class="fas fa-user"></i> @concert.Artist
-                            </p>
-                            <p class="concert-location">
-                                <i class="fas fa-map-marker-alt"></i> @concert.Venue?.Name, @concert.Venue?.City
-                            </p>
                             
-                            <!-- Ticket Availability -->
-                            @{
-                                var availabilityPercent = concert.TotalTickets > 0 
-                                    ? Math.Round((decimal)concert.AvailableTickets / concert.TotalTickets * 100, 0)
-                                    : 0;
-                            }
-                            @if (concert.AvailableTickets > 0)
-                            {
-                                <p class="text-muted small mb-2">
-                                    <i class="fas fa-ticket-alt"></i> @concert.AvailableTickets tickets available
-                                </p>
-                            }
-                            else
-                            {
-                                <p class="text-danger small mb-2">
-                                    <i class="fas fa-exclamation-circle"></i> Sold Out
-                                </p>
-                            }
-                            
-                            <div class="d-flex justify-content-between align-items-center mt-3">
-                                <span class="concert-price">From $@concert.BasePrice.ToString("F2")</span>
-                                <a asp-controller="Concerts" asp-action="Details" asp-route-id="@concert.ConcertId" 
-                                   class="btn btn-primary-custom btn-sm">
-                                    View Details
-                                </a>
+                            <!-- Concert Info -->
+                            <div class="concert-info-wrapper">
+                                <div class="concert-date">
+                                    <i class="bi bi-calendar-event"></i> 
+                                    @concert.EventDate.ToString("ddd, dd MMM yyyy")
+                                </div>
+                                
+                                <h3 class="concert-name">@concert.Title</h3>
+                                
+                                <div class="concert-meta">
+                                    <div class="meta-item">
+                                        <i class="bi bi-person"></i> @concert.Artist
+                                    </div>
+                                    <div class="meta-item">
+                                        <i class="bi bi-geo-alt"></i> @concert.Venue?.Name
+                                    </div>
+                                    <div class="meta-item">
+                                        <i class="bi bi-clock"></i> @concert.EventTime.ToString("hh:mm tt")
+                                    </div>
+                                </div>
+                                
+                                <!-- Availability Bar -->
+                                <div class="availability-wrapper">
+                                    <div class="availability-bar">
+                                        <div class="availability-fill" style="width: @availabilityPercent%"></div>
+                                    </div>
+                                    <span class="availability-text">@concert.AvailableTickets tickets left</span>
+                                </div>
+                                
+                                <!-- Price & Action -->
+                                <div class="concert-footer">
+                                    <div class="price-wrapper">
+                                        <span class="price-label">From</span>
+                                        <span class="price-value">RM @concert.BasePrice.ToString("N2")</span>
+                                    </div>
+                                    @if (!isSoldOut)
+                                    {
+                                        <a asp-controller="Concerts" asp-action="Details" asp-route-id="@concert.ConcertId" 
+                                           class="btn btn-primary">
+                                            <i class="bi bi-ticket-perforated"></i> Book Now
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <button class="btn btn-secondary" disabled>Sold Out</button>
+                                    }
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            }
-        </div>
-    }
-    else
-    {
-        <div class="alert alert-info text-center py-5" role="alert">
-            <i class="fas fa-info-circle fa-3x mb-3"></i>
-            <h4>No concerts available at the moment</h4>
-            <p>Check back soon for upcoming events!</p>
-        </div>
-    }
-
-    <div class="text-center mt-4">
-        <a asp-controller="Concerts" asp-action="Index" class="btn btn-outline-custom">
-            <i class="fas fa-calendar-alt"></i> View All Events
-        </a>
+                }
+            </div>
+            
+            <div class="text-center mt-5">
+                <a asp-controller="Concerts" asp-action="Index" class="btn btn-outline-primary btn-lg">
+                    <i class="bi bi-grid"></i> View All Concerts
+                </a>
+            </div>
+        }
+        else
+        {
+            <div class="empty-state">
+                <i class="bi bi-calendar-x"></i>
+                <h3>No Concerts Available</h3>
+                <p>Check back soon for exciting upcoming events!</p>
+            </div>
+        }
     </div>
 </section>
 
 <!-- Features Section -->
-<section id="features" class="container my-5 py-5">
-    <h2 class="section-title">Why Choose JTX Concerts?</h2>
-    <div class="row">
-        <div class="col-md-4">
-            <div class="feature-box">
-                <div class="feature-icon">
-                    <i class="fas fa-shield-alt"></i>
-                </div>
-                <h4 class="feature-title">Secure Booking</h4>
-                <p class="feature-description">
-                    100% secure payment processing with buyer protection guarantee for all transactions.
-                </p>
-            </div>
+<section id="features" class="features-section py-5">
+    <div class="container">
+        <div class="section-header text-center mb-5">
+            <span class="section-badge">Why Choose Us</span>
+            <h2 class="section-title-modern">
+                Your <span class="text-gradient">Trusted</span> Ticketing Partner
+            </h2>
         </div>
-        <div class="col-md-4">
-            <div class="feature-box">
-                <div class="feature-icon">
-                    <i class="fas fa-mobile-alt"></i>
+        
+        <div class="row g-4">
+            <div class="col-lg-3 col-md-6">
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="feature-icon">
+                        <i class="bi bi-shield-check"></i>
+                    </div>
+                    <h4 class="feature-title">100% Secure</h4>
+                    <p class="feature-description">
+                        SSL encrypted payments and buyer protection guarantee
+                    </p>
                 </div>
-                <h4 class="feature-title">Mobile Tickets</h4>
-                <p class="feature-description">
-                    Instant digital tickets delivered to your phone. No printing required, just show and go!
-                </p>
             </div>
-        </div>
-        <div class="col-md-4">
-            <div class="feature-box">
-                <div class="feature-icon">
-                    <i class="fas fa-headset"></i>
+            
+            <div class="col-lg-3 col-md-6">
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="feature-icon">
+                        <i class="bi bi-phone"></i>
+                    </div>
+                    <h4 class="feature-title">Mobile Tickets</h4>
+                    <p class="feature-description">
+                        Digital tickets delivered instantly to your phone
+                    </p>
                 </div>
-                <h4 class="feature-title">24/7 Support</h4>
-                <p class="feature-description">
-                    Our dedicated support team is always ready to help with any questions or concerns.
-                </p>
+            </div>
+            
+            <div class="col-lg-3 col-md-6">
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="feature-icon">
+                        <i class="bi bi-headset"></i>
+                    </div>
+                    <h4 class="feature-title">24/7 Support</h4>
+                    <p class="feature-description">
+                        Our team is always ready to help you
+                    </p>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6">
+                <div class="feature-card" data-aos="fade-up" data-aos-delay="400">
+                    <div class="feature-icon">
+                        <i class="bi bi-percent"></i>
+                    </div>
+                    <h4 class="feature-title">Best Prices</h4>
+                    <p class="feature-description">
+                        Competitive pricing with no hidden fees
+                    </p>
+                </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Call to Action Section -->
-<section class="container my-5 py-5">
-    <div class="text-center" style="background: linear-gradient(135deg, #1a1f3a 0%, #0a0e27 100%); padding: 4rem 2rem; border-radius: 20px;">
-        <h2 class="mb-4" style="font-size: 2.5rem; color: white;">Never Miss Out on Your Favorite Artists</h2>
-        <p class="mb-4" style="font-size: 1.2rem; color: #e0e0e0;">
-            Sign up now and get exclusive access to presale tickets and special offers!
-        </p>
-        <form class="row g-3 justify-content-center" style="max-width: 600px; margin: 0 auto;">
-            <div class="col-auto" style="flex: 1;">
-                <input type="email" class="form-control" placeholder="Enter your email" 
-                       style="padding: 0.8rem; border-radius: 50px; background: var(--card-bg); color: white; border: 2px solid var(--secondary-color);">
+<!-- Newsletter CTA -->
+<section class="newsletter-cta py-5">
+    <div class="container">
+        <div class="newsletter-card">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    <i class="bi bi-envelope-heart newsletter-icon"></i>
+                    <h2 class="newsletter-title">Never Miss a Beat!</h2>
+                    <p class="newsletter-text">
+                        Subscribe to our newsletter for exclusive presale access, 
+                        special offers, and updates on upcoming concerts.
+                    </p>
+                </div>
+                <div class="col-lg-6">
+                    <form class="newsletter-form">
+                        <div class="input-group input-group-lg">
+                            <input type="email" class="form-control" placeholder="Enter your email" required>
+                            <button class="btn btn-light" type="submit">
+                                <i class="bi bi-send"></i> Subscribe Now
+                            </button>
+                        </div>
+                        <small class="form-text">
+                            <i class="bi bi-lock"></i> We respect your privacy. Unsubscribe anytime.
+                        </small>
+                    </form>
+                </div>
             </div>
-            <div class="col-auto">
-                <button type="submit" class="btn btn-primary-custom">Subscribe</button>
-            </div>
-        </form>
+        </div>
     </div>
 </section>
 
-<!-- Additional Styles for Concert Cards -->
+@section Styles {
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 <style>
-    .concert-card {
+    /* Modern Hero Section */
+    .modern-hero {
         position: relative;
-        transition: transform 0.3s ease;
+        min-height: 90vh;
+        overflow: hidden;
+        padding: 4rem 0;
     }
     
-    .concert-card:hover {
+    .hero-background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        opacity: 0.1;
+    }
+    
+    .hero-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: 
+            radial-gradient(circle at 20% 50%, rgba(102, 126, 234, 0.2) 0%, transparent 50%),
+            radial-gradient(circle at 80% 50%, rgba(245, 87, 108, 0.2) 0%, transparent 50%);
+    }
+    
+    .hero-content-wrapper {
+        position: relative;
+        z-index: 1;
+    }
+    
+    .min-vh-75 {
+        min-height: 75vh;
+    }
+    
+    .hero-badge {
+        display: inline-block;
+        background: rgba(102, 126, 234, 0.1);
+        border: 1px solid rgba(102, 126, 234, 0.3);
+        color: var(--primary-purple);
+        padding: 0.5rem 1.5rem;
+        border-radius: var(--radius-full);
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin-bottom: 2rem;
+    }
+    
+    .hero-title {
+        font-size: 3.5rem;
+        font-weight: 900;
+        line-height: 1.2;
+        margin-bottom: 1.5rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.25rem;
+        color: var(--text-secondary);
+        margin-bottom: 2.5rem;
+        line-height: 1.8;
+    }
+    
+    .hero-actions .btn {
+        box-shadow: var(--shadow-lg);
+    }
+    
+    .hero-stats {
+        display: flex;
+        gap: 3rem;
+        flex-wrap: wrap;
+    }
+    
+    .stat-item {
+        text-align: center;
+    }
+    
+    .stat-number {
+        font-size: 2.5rem;
+        font-weight: 800;
+        background: var(--primary-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 0.5rem;
+    }
+    
+    .stat-label {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+    }
+    
+    .hero-image-container {
+        position: relative;
+        height: 500px;
+    }
+    
+    .floating-card {
+        position: absolute;
+        background: var(--card-bg);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: var(--radius-lg);
+        padding: 2rem;
+        text-align: center;
+        box-shadow: var(--shadow-lg);
+        animation: float 3s ease-in-out infinite;
+    }
+    
+    .floating-card.card-1 {
+        top: 10%;
+        right: 20%;
+        animation-delay: 0s;
+    }
+    
+    .floating-card.card-2 {
+        top: 45%;
+        right: 5%;
+        animation-delay: 1s;
+    }
+    
+    .floating-card.card-3 {
+        top: 70%;
+        right: 35%;
+        animation-delay: 2s;
+    }
+    
+    @@keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-20px); }
+    }
+    
+    .scroll-indicator {
+        position: absolute;
+        bottom: 2rem;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 2rem;
+        color: var(--text-muted);
+        animation: bounce 2s ease-in-out infinite;
+    }
+    
+    @@keyframes bounce {
+        0%, 100% { transform: translateX(-50%) translateY(0); }
+        50% { transform: translateX(-50%) translateY(10px); }
+    }
+    
+    /* Search Section */
+    .search-section {
+        margin-top: -3rem;
+        position: relative;
+        z-index: 2;
+    }
+    
+    .search-card {
+        background: var(--card-bg);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: var(--radius-xl);
+        padding: 2rem;
+        box-shadow: var(--shadow-lg);
+    }
+    
+    .input-with-icon {
+        position: relative;
+    }
+    
+    .input-with-icon i {
+        position: absolute;
+        left: 1.2rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-muted);
+        z-index: 1;
+    }
+    
+    .input-with-icon .form-control,
+    .input-with-icon .form-select {
+        padding-left: 3rem;
+    }
+    
+    /* Section Headers */
+    .section-badge {
+        display: inline-block;
+        background: rgba(102, 126, 234, 0.1);
+        color: var(--primary-purple);
+        padding: 0.5rem 1.5rem;
+        border-radius: var(--radius-full);
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+    
+    .section-title-modern {
+        font-size: 2.5rem;
+        font-weight: 900;
+        margin-bottom: 1rem;
+    }
+    
+    .section-subtitle {
+        font-size: 1.1rem;
+        color: var(--text-secondary);
+    }
+    
+    /* Modern Concert Cards */
+    .modern-concert-card {
+        background: var(--card-bg);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+        transition: var(--transition-normal);
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .modern-concert-card:hover {
+        transform: translateY(-8px);
+        box-shadow: var(--shadow-lg), var(--shadow-glow);
+        border-color: rgba(102, 126, 234, 0.3);
+    }
+    
+    .concert-image-wrapper {
+        position: relative;
+        height: 250px;
+        overflow: hidden;
+    }
+    
+    .concert-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: var(--transition-slow);
+    }
+    
+    .modern-concert-card:hover .concert-image {
+        transform: scale(1.1);
+    }
+    
+    .concert-image-placeholder {
+        width: 100%;
+        height: 100%;
+        background: var(--primary-gradient);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 4rem;
+        color: white;
+    }
+    
+    .status-badge {
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+        padding: 0.5rem 1rem;
+        border-radius: var(--radius-full);
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    .status-badge.sold-out {
+        background: var(--accent-gradient);
+        color: white;
+    }
+    
+    .status-badge.low-stock {
+        background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+        color: var(--bg-dark);
+        animation: pulse 2s ease-in-out infinite;
+    }
+    
+    .genre-badge {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(10px);
+        padding: 0.4rem 0.8rem;
+        border-radius: var(--radius-sm);
+        font-size: 0.8rem;
+        color: white;
+    }
+    
+    .quick-action {
+        position: absolute;
+        bottom: 1rem;
+        left: 50%;
+        transform: translateX(-50%) translateY(10px);
+        opacity: 0;
+        transition: var(--transition-normal);
+    }
+    
+    .modern-concert-card:hover .quick-action {
+        transform: translateX(-50%) translateY(0);
+        opacity: 1;
+    }
+    
+    .concert-info-wrapper {
+        padding: 1.5rem;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .concert-date {
+        color: var(--accent-gold);
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+    
+    .concert-name {
+        font-size: 1.3rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        line-height: 1.4;
+    }
+    
+    .concert-meta {
+        margin-bottom: 1rem;
+    }
+    
+    .meta-item {
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+        margin-bottom: 0.4rem;
+    }
+    
+    .meta-item i {
+        color: var(--primary-purple);
+        margin-right: 0.5rem;
+    }
+    
+    .availability-wrapper {
+        margin-bottom: 1.5rem;
+    }
+    
+    .availability-bar {
+        height: 4px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: var(--radius-full);
+        overflow: hidden;
+        margin-bottom: 0.5rem;
+    }
+    
+    .availability-fill {
+        height: 100%;
+        background: var(--primary-gradient);
+        transition: var(--transition-normal);
+    }
+    
+    .availability-text {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+    }
+    
+    .concert-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: auto;
+    }
+    
+    .price-label {
+        display: block;
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        margin-bottom: 0.2rem;
+    }
+    
+    .price-value {
+        font-size: 1.5rem;
+        font-weight: 800;
+        background: var(--primary-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    
+    /* Feature Cards */
+    .feature-card {
+        background: var(--card-bg);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: var(--radius-lg);
+        padding: 2rem;
+        text-align: center;
+        transition: var(--transition-normal);
+    }
+    
+    .feature-card:hover {
         transform: translateY(-5px);
+        box-shadow: var(--shadow-lg);
+        border-color: rgba(102, 126, 234, 0.3);
+    }
+    
+    .feature-icon {
+        font-size: 3rem;
+        background: var(--primary-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 1rem;
+    }
+    
+    .feature-title {
+        font-size: 1.2rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+    
+    .feature-description {
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+    }
+    
+    /* Newsletter CTA */
+    .newsletter-card {
+        background: var(--primary-gradient);
+        border-radius: var(--radius-xl);
+        padding: 4rem 3rem;
+        box-shadow: var(--shadow-lg), var(--shadow-glow);
+    }
+    
+    .newsletter-icon {
+        font-size: 4rem;
+        color: white;
+        margin-bottom: 1rem;
+    }
+    
+    .newsletter-title {
+        font-size: 2.5rem;
+        font-weight: 900;
+        color: white;
+        margin-bottom: 1rem;
+    }
+    
+    .newsletter-text {
+        font-size: 1.1rem;
+        color: rgba(255, 255, 255, 0.9);
+        margin-bottom: 0;
+    }
+    
+    .newsletter-form .form-control {
+        background: white;
+        border: none;
+        color: var(--bg-dark);
+        padding: 1rem 1.5rem;
+        border-radius: var(--radius-full) 0 0 var(--radius-full);
+    }
+    
+    .newsletter-form .btn {
+        border-radius: 0 var(--radius-full) var(--radius-full) 0;
+        padding: 1rem 2rem;
+        font-weight: 700;
+        background: var(--bg-dark) !important;
+        color: white !important;
+        border: none;
+    }
+    
+    .newsletter-form .form-text {
+        display: block;
+        margin-top: 1rem;
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 0.9rem;
+    }
+    
+    /* Empty State */
+    .empty-state {
+        text-align: center;
+        padding: 5rem 2rem;
+    }
+    
+    .empty-state i {
+        font-size: 5rem;
+        color: var(--text-muted);
+        margin-bottom: 1.5rem;
+    }
+    
+    .empty-state h3 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+    }
+    
+    /* Responsive */
+    @@media (max-width: 768px) {
+        .hero-title {
+            font-size: 2.5rem;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.1rem;
+        }
+        
+        .hero-stats {
+            gap: 2rem;
+            justify-content: center;
+        }
+        
+        .section-title-modern {
+            font-size: 2rem;
+        }
+        
+        .newsletter-card {
+            padding: 3rem 2rem;
+        }
+        
+        .newsletter-title {
+            font-size: 2rem;
+        }
     }
 </style>
+}
+
+@section Scripts {
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+    // Initialize AOS (Animate On Scroll)
+    AOS.init({
+        duration: 800,
+        easing: 'ease-in-out',
+        once: true,
+        offset: 100
+    });
+    
+    // Newsletter form subscription
+    document.querySelector('.newsletter-form')?.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const email = this.querySelector('input[type="email"]').value;
+        alert(`Thank you for subscribing! We'll send updates to ${email}`);
+        this.reset();
+    });
+</script>
+}

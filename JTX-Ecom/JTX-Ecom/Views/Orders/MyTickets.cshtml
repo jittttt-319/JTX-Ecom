@@ -15,6 +15,9 @@
 
     @if (Model.Any())
     {
+        var upcomingTickets = Model.Where(t => t.Concert!.EventDate > DateTime.Now).ToList();
+        var pastTickets = Model.Where(t => t.Concert!.EventDate <= DateTime.Now).ToList();
+        
         <!-- Filter Tabs -->
         <ul class="nav nav-tabs mb-4" id="ticketTabs" role="tablist">
             <li class="nav-item" role="presentation">
@@ -24,12 +27,12 @@
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="upcoming-tab" data-bs-toggle="tab" data-bs-target="#upcoming" type="button">
-                    Upcoming (@Model.Count(t => t.Concert!.EventDate > DateTime.Now))
+                    Upcoming (@upcomingTickets.Count)
                 </button>
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="past-tab" data-bs-toggle="tab" data-bs-target="#past" type="button">
-                    Past Events (@Model.Count(t => t.Concert!.EventDate <= DateTime.Now))
+                    Past Events (@pastTickets.Count)
                 </button>
             </li>
         </ul>
@@ -39,23 +42,141 @@
             <div class="tab-pane fade show active" id="all">
                 @foreach (var ticket in Model)
                 {
-                    <partial name="_TicketCard" model="ticket" />
+                    var isUpcoming = ticket.Concert!.EventDate > DateTime.Now;
+                    <div class="card mb-3 @(isUpcoming ? "" : "opacity-75")">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-md-1 text-center">
+                                    @if (isUpcoming)
+                                    {
+                                        <i class="bi bi-qr-code display-4 text-primary"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="bi bi-check-circle-fill display-4 text-success"></i>
+                                    }
+                                </div>
+                                <div class="col-md-6">
+                                    <h5 class="card-title mb-1">@ticket.Concert?.Title</h5>
+                                    <p class="card-text mb-2">
+                                        <i class="bi bi-person-fill"></i> @ticket.Concert?.Artist<br>
+                                        <i class="bi bi-calendar-event"></i> @ticket.Concert?.EventDate.ToString("dd MMMM yyyy, hh:mm tt")<br>
+                                        <i class="bi bi-geo-alt-fill"></i> @ticket.Concert?.Venue?.Name
+                                    </p>
+                                    <span class="badge bg-primary">@ticket.TicketType</span>
+                                    <span class="badge bg-secondary">@ticket.TicketNumber</span>
+                                    @if (!string.IsNullOrEmpty(ticket.SeatNumber))
+                                    {
+                                        <span class="badge bg-info">Seat: @ticket.SeatNumber</span>
+                                    }
+                                </div>
+                                <div class="col-md-3 text-center">
+                                    <p class="text-muted small mb-1">Ticket Price</p>
+                                    <h4 class="text-primary mb-0">RM @ticket.Price.ToString("N2")</h4>
+                                    @if (ticket.PurchaseDate.HasValue)
+                                    {
+                                        <small class="text-muted">Purchased: @ticket.PurchaseDate.Value.ToString("dd MMM yyyy")</small>
+                                    }
+                                </div>
+                                <div class="col-md-2 text-end">
+                                    @if (isUpcoming)
+                                    {
+                                        <a asp-action="TicketDetails" asp-route-id="@ticket.TicketId" class="btn btn-primary">
+                                            <i class="bi bi-qr-code"></i> View Ticket
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary p-2">Event Completed</span>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 }
             </div>
 
             <!-- Upcoming -->
             <div class="tab-pane fade" id="upcoming">
-                @foreach (var ticket in Model.Where(t => t.Concert!.EventDate > DateTime.Now))
+                @foreach (var ticket in upcomingTickets)
                 {
-                    <partial name="_TicketCard" model="ticket" />
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-md-1 text-center">
+                                    <i class="bi bi-qr-code display-4 text-primary"></i>
+                                </div>
+                                <div class="col-md-6">
+                                    <h5 class="card-title mb-1">@ticket.Concert?.Title</h5>
+                                    <p class="card-text mb-2">
+                                        <i class="bi bi-person-fill"></i> @ticket.Concert?.Artist<br>
+                                        <i class="bi bi-calendar-event"></i> @ticket.Concert?.EventDate.ToString("dd MMMM yyyy, hh:mm tt")<br>
+                                        <i class="bi bi-geo-alt-fill"></i> @ticket.Concert?.Venue?.Name
+                                    </p>
+                                    <span class="badge bg-primary">@ticket.TicketType</span>
+                                    <span class="badge bg-secondary">@ticket.TicketNumber</span>
+                                    @if (!string.IsNullOrEmpty(ticket.SeatNumber))
+                                    {
+                                        <span class="badge bg-info">Seat: @ticket.SeatNumber</span>
+                                    }
+                                </div>
+                                <div class="col-md-3 text-center">
+                                    <p class="text-muted small mb-1">Ticket Price</p>
+                                    <h4 class="text-primary mb-0">RM @ticket.Price.ToString("N2")</h4>
+                                    @if (ticket.PurchaseDate.HasValue)
+                                    {
+                                        <small class="text-muted">Purchased: @ticket.PurchaseDate.Value.ToString("dd MMM yyyy")</small>
+                                    }
+                                </div>
+                                <div class="col-md-2 text-end">
+                                    <a asp-action="TicketDetails" asp-route-id="@ticket.TicketId" class="btn btn-primary">
+                                        <i class="bi bi-qr-code"></i> View Ticket
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 }
             </div>
 
             <!-- Past -->
             <div class="tab-pane fade" id="past">
-                @foreach (var ticket in Model.Where(t => t.Concert!.EventDate <= DateTime.Now))
+                @foreach (var ticket in pastTickets)
                 {
-                    <partial name="_TicketCard" model="ticket" />
+                    <div class="card mb-3 opacity-75">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-md-1 text-center">
+                                    <i class="bi bi-check-circle-fill display-4 text-success"></i>
+                                </div>
+                                <div class="col-md-6">
+                                    <h5 class="card-title mb-1">@ticket.Concert?.Title</h5>
+                                    <p class="card-text mb-2">
+                                        <i class="bi bi-person-fill"></i> @ticket.Concert?.Artist<br>
+                                        <i class="bi bi-calendar-event"></i> @ticket.Concert?.EventDate.ToString("dd MMMM yyyy, hh:mm tt")<br>
+                                        <i class="bi bi-geo-alt-fill"></i> @ticket.Concert?.Venue?.Name
+                                    </p>
+                                    <span class="badge bg-primary">@ticket.TicketType</span>
+                                    <span class="badge bg-secondary">@ticket.TicketNumber</span>
+                                    @if (!string.IsNullOrEmpty(ticket.SeatNumber))
+                                    {
+                                        <span class="badge bg-info">Seat: @ticket.SeatNumber</span>
+                                    }
+                                </div>
+                                <div class="col-md-3 text-center">
+                                    <p class="text-muted small mb-1">Ticket Price</p>
+                                    <h4 class="text-primary mb-0">RM @ticket.Price.ToString("N2")</h4>
+                                    @if (ticket.PurchaseDate.HasValue)
+                                    {
+                                        <small class="text-muted">Purchased: @ticket.PurchaseDate.Value.ToString("dd MMM yyyy")</small>
+                                    }
+                                </div>
+                                <div class="col-md-2 text-end">
+                                    <span class="badge bg-secondary p-2">Event Completed</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 }
             </div>
         </div>
@@ -79,68 +200,9 @@
     }
 </div>
 
-@* Partial View for Ticket Card *@
-@{
-    void RenderTicketCard(JTX_Ecom.Models.Ticket ticket)
-    {
-        var isUpcoming = ticket.Concert!.EventDate > DateTime.Now;
-        
-        <div class="card mb-3 @(isUpcoming ? "" : "opacity-75")">
-            <div class="card-body">
-                <div class="row align-items-center">
-                    <div class="col-md-1 text-center">
-                        @if (isUpcoming)
-                        {
-                            <i class="bi bi-qr-code display-4 text-primary"></i>
-                        }
-                        else
-                        {
-                            <i class="bi bi-check-circle-fill display-4 text-success"></i>
-                        }
-                    </div>
-                    <div class="col-md-6">
-                        <h5 class="card-title mb-1">@ticket.Concert?.Title</h5>
-                        <p class="card-text mb-2">
-                            <i class="bi bi-person-fill"></i> @ticket.Concert?.Artist<br>
-                            <i class="bi bi-calendar-event"></i> @ticket.Concert?.EventDate.ToString("dd MMMM yyyy, hh:mm tt")<br>
-                            <i class="bi bi-geo-alt-fill"></i> @ticket.Concert?.Venue?.Name
-                        </p>
-                        <span class="badge bg-primary">@ticket.TicketType</span>
-                        <span class="badge bg-secondary">@ticket.TicketNumber</span>
-                        @if (!string.IsNullOrEmpty(ticket.SeatNumber))
-                        {
-                            <span class="badge bg-info">Seat: @ticket.SeatNumber</span>
-                        }
-                    </div>
-                    <div class="col-md-3 text-center">
-                        <p class="text-muted small mb-1">Ticket Price</p>
-                        <h4 class="text-primary mb-0">RM @ticket.Price.ToString("N2")</h4>
-                        @if (ticket.PurchaseDate.HasValue)
-                        {
-                            <small class="text-muted">Purchased: @ticket.PurchaseDate.Value.ToString("dd MMM yyyy")</small>
-                        }
-                    </div>
-                    <div class="col-md-2 text-end">
-                        @if (isUpcoming)
-                        {
-                            <a asp-action="TicketDetails" asp-route-id="@ticket.TicketId" class="btn btn-primary">
-                                <i class="bi bi-qr-code"></i> View Ticket
-                            </a>
-                        }
-                        else
-                        {
-                            <span class="badge bg-secondary p-2">Event Completed</span>
-                        }
-                    </div>
-                </div>
-            </div>
-        </div>
-    }
-}
-
 @section Styles {
     <style>
-        @media (max-width: 768px) {
+        @@media (max-width: 768px) {
             .card-body .row > div {
                 text-align: center !important;
                 margin-bottom: 1rem;
