@@ -8,11 +8,11 @@
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-md-6">
-            <div class="card shadow">
+            <div class="card shadow register-card">
                 <div class="card-body p-5">
                     <div class="text-center mb-4">
-                        <h2 class="fw-bold">Create Account</h2>
-                        <p class="text-muted">Sign up to book concert tickets</p>
+                        <h2 class="fw-bold text-dark">Create Account</h2>
+                        <p class="text-secondary fw-semibold">Join us to book amazing concerts</p>
                     </div>
 
                     <form asp-action="Register" method="post">
@@ -20,38 +20,38 @@
 
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label asp-for="FirstName" class="form-label">First Name</label>
-                                <input asp-for="FirstName" class="form-control" placeholder="Enter first name" />
+                                <label asp-for="FirstName" class="form-label fw-bold text-dark">First Name</label>
+                                <input asp-for="FirstName" class="form-control form-control-lg" placeholder="John" />
                                 <span asp-validation-for="FirstName" class="text-danger"></span>
                             </div>
 
                             <div class="col-md-6 mb-3">
-                                <label asp-for="LastName" class="form-label">Last Name</label>
-                                <input asp-for="LastName" class="form-control" placeholder="Enter last name" />
+                                <label asp-for="LastName" class="form-label fw-bold text-dark">Last Name</label>
+                                <input asp-for="LastName" class="form-control form-control-lg" placeholder="Doe" />
                                 <span asp-validation-for="LastName" class="text-danger"></span>
                             </div>
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="Email" class="form-label">Email Address</label>
-                            <input asp-for="Email" class="form-control" placeholder="Enter your email" />
+                            <label asp-for="Email" class="form-label fw-bold text-dark">Email Address</label>
+                            <input asp-for="Email" class="form-control form-control-lg" placeholder="john@example.com" />
                             <span asp-validation-for="Email" class="text-danger"></span>
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="Password" class="form-label">Password</label>
-                            <input asp-for="Password" type="password" class="form-control" 
-                                   placeholder="Create a password" />
+                            <label asp-for="Password" class="form-label fw-bold text-dark">Password</label>
+                            <input asp-for="Password" type="password" class="form-control form-control-lg" 
+                                   placeholder="Min 6 characters" />
                             <span asp-validation-for="Password" class="text-danger"></span>
-                            <small class="form-text text-muted">
-                                Password must be at least 6 characters with uppercase, lowercase, and numbers
+                            <small class="form-text text-secondary fw-semibold">
+                                Must contain uppercase, lowercase, and numbers
                             </small>
                         </div>
 
-                        <div class="mb-3">
-                            <label asp-for="ConfirmPassword" class="form-label">Confirm Password</label>
-                            <input asp-for="ConfirmPassword" type="password" class="form-control" 
-                                   placeholder="Confirm your password" />
+                        <div class="mb-4">
+                            <label asp-for="ConfirmPassword" class="form-label fw-bold text-dark">Confirm Password</label>
+                            <input asp-for="ConfirmPassword" type="password" class="form-control form-control-lg" 
+                                   placeholder="Re-enter password" />
                             <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                         </div>
 
@@ -62,9 +62,9 @@
                         </div>
 
                         <div class="text-center">
-                            <p class="mb-0">
+                            <p class="mb-0 text-dark fw-semibold">
                                 Already have an account? 
-                                <a asp-action="Login" class="text-decoration-none fw-bold">Login here</a>
+                                <a asp-action="Login" class="text-decoration-none fw-bold text-primary">Login here</a>
                             </p>
                         </div>
                     </form>
@@ -74,22 +74,71 @@
     </div>
 </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
-
+@section Styles {
 <style>
-    .card {
+    .register-card {
         border: none;
         border-radius: 15px;
+        background: #ffffff !important;
+    }
+    
+    .register-card .card-body {
+        background: #ffffff !important;
+    }
+    
+    .text-dark {
+        color: #2c3e50 !important;
+    }
+    
+    .text-secondary {
+        color: #6c757d !important;
+    }
+    
+    .text-primary {
+        color: #667eea !important;
+    }
+    
+    h2 {
+        color: #2c3e50 !important;
+    }
+    
+    .form-label {
+        color: #2c3e50 !important;
+    }
+    
+    .form-control {
+        background: #f8f9fa;
+        border: 2px solid #e9ecef;
+        color: #2c3e50 !important;
+        font-weight: 600;
+    }
+    
+    .form-control:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        color: #2c3e50 !important;
+    }
+    
+    .form-control::placeholder {
+        color: #95a5a6 !important;
+    }
+    
+    .form-text {
+        color: #6c757d !important;
     }
 
     .btn-primary {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         border: none;
+        font-weight: 700;
     }
 
     .btn-primary:hover {
         opacity: 0.9;
     }
 </style>
+}
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

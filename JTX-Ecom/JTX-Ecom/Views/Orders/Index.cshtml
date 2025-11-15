@@ -8,8 +8,8 @@
 <div class="container py-5">
     <div class="row">
         <div class="col-12 mb-4">
-            <h2><i class="bi bi-bag-check-fill"></i> My Orders</h2>
-            <p class="text-muted">View all your ticket orders</p>
+            <h2 class="text-dark fw-bold"><i class="bi bi-bag-check-fill"></i> My Orders</h2>
+            <p class="text-secondary fw-semibold">View all your ticket orders</p>
         </div>
     </div>
 
@@ -19,28 +19,28 @@
             <div class="col-12">
                 @foreach (var order in Model)
                 {
-                    <div class="card mb-3">
+                    <div class="card mb-3 order-card">
                         <div class="card-body">
                             <div class="row align-items-center">
                                 <div class="col-md-3">
-                                    <h6 class="text-muted mb-1">Order Number</h6>
-                                    <h5 class="mb-0">@order.OrderNumber</h5>
+                                    <h6 class="text-secondary mb-1 fw-bold">Order Number</h6>
+                                    <h5 class="mb-0 text-dark fw-bold">@order.OrderNumber</h5>
                                 </div>
                                 <div class="col-md-2">
-                                    <h6 class="text-muted mb-1">Date</h6>
-                                    <p class="mb-0">@order.OrderDate.ToString("dd MMM yyyy")</p>
+                                    <h6 class="text-secondary mb-1 fw-bold">Date</h6>
+                                    <p class="mb-0 text-dark fw-semibold">@order.OrderDate.ToString("dd MMM yyyy")</p>
                                 </div>
                                 <div class="col-md-2">
-                                    <h6 class="text-muted mb-1">Items</h6>
-                                    <p class="mb-0">@order.Quantity ticket(s)</p>
+                                    <h6 class="text-secondary mb-1 fw-bold">Items</h6>
+                                    <p class="mb-0 text-dark fw-semibold">@order.Quantity ticket(s)</p>
                                 </div>
                                 <div class="col-md-2">
-                                    <h6 class="text-muted mb-1">Total</h6>
-                                    <h5 class="mb-0 text-primary">RM @order.TotalAmount.ToString("N2")</h5>
+                                    <h6 class="text-secondary mb-1 fw-bold">Total</h6>
+                                    <h5 class="mb-0 text-primary fw-bold">RM @order.TotalAmount.ToString("N2")</h5>
                                 </div>
                                 <div class="col-md-2">
-                                    <h6 class="text-muted mb-1">Status</h6>
-                                    <span class="badge bg-@(order.PaymentStatus == "Completed" ? "success" : order.PaymentStatus == "Pending" ? "warning" : "danger")">
+                                    <h6 class="text-secondary mb-1 fw-bold">Status</h6>
+                                    <span class="badge bg-@(order.PaymentStatus == "Completed" ? "success" : order.PaymentStatus == "Pending" ? "warning" : "danger") px-3 py-2">
                                         @order.PaymentStatus
                                     </span>
                                 </div>
@@ -62,11 +62,11 @@
     {
         <div class="row">
             <div class="col-12">
-                <div class="card text-center py-5">
+                <div class="card text-center py-5 empty-orders-card">
                     <div class="card-body">
                         <i class="bi bi-inbox display-1 text-muted mb-3"></i>
-                        <h3>No orders yet</h3>
-                        <p class="text-muted mb-4">You haven't made any purchases yet.</p>
+                        <h3 class="text-dark fw-bold">No orders yet</h3>
+                        <p class="text-secondary mb-4 fw-semibold">You haven't made any purchases yet.</p>
                         <a asp-controller="Concerts" asp-action="Index" class="btn btn-primary btn-lg">
                             <i class="bi bi-search"></i> Browse Concerts
                         </a>
@@ -76,3 +76,45 @@
         </div>
     }
 </div>
+
+@section Styles {
+<style>
+    .order-card,
+    .empty-orders-card {
+        background: #ffffff !important;
+        border: 1px solid #e9ecef;
+        border-radius: 12px;
+    }
+    
+    .order-card .card-body,
+    .empty-orders-card .card-body {
+        background: #ffffff !important;
+    }
+    
+    .text-dark {
+        color: #2c3e50 !important;
+    }
+    
+    .text-secondary {
+        color: #6c757d !important;
+    }
+    
+    .text-primary {
+        color: #667eea !important;
+    }
+    
+    h2, h3, h5, h6 {
+        color: #2c3e50 !important;
+    }
+    
+    .badge {
+        font-size: 0.875rem;
+        font-weight: 700;
+    }
+    
+    .btn-lg {
+        padding: 0.75rem 2rem;
+        font-weight: 700;
+    }
+</style>
+}

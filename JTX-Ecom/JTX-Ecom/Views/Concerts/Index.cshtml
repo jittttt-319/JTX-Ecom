@@ -376,7 +376,14 @@
         background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="2" fill="white" opacity="0.1"/></svg>');
         opacity: 0.3;
     }
-
+    
+    /* Quick Search Card */
+    .card h5 {
+        color: #2c3e50 !important;
+        font-weight: 700;
+    }
+    
+    /* Genre Pills */
     .genre-pill {
         display: inline-flex;
         align-items: center;
@@ -386,14 +393,14 @@
         border: 2px solid #e9ecef;
         border-radius: 50px;
         text-decoration: none;
-        color: #495057;
-        font-weight: 500;
+        color: #2c3e50 !important;
+        font-weight: 600;
         transition: all 0.3s ease;
     }
 
     .genre-pill:hover {
         border-color: #667eea;
-        color: #667eea;
+        color: #667eea !important;
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
     }
@@ -401,9 +408,23 @@
     .genre-pill.active {
         background: var(--primary-gradient);
         border-color: transparent;
-        color: white;
+        color: white !important;
+    }
+    
+    /* Results Header */
+    .row h4 {
+        color: #2c3e50 !important;
+    }
+    
+    .row h4 .fw-bold {
+        color: #2c3e50 !important;
+    }
+    
+    .row h4 .text-muted {
+        color: #6c757d !important;
     }
 
+    /* Concert Cards */
     .concert-card {
         border: none;
         border-radius: 16px;
@@ -411,6 +432,7 @@
         box-shadow: var(--card-shadow);
         transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         position: relative;
+        background: #ffffff !important;
     }
 
     .concert-card:hover {
@@ -420,6 +442,35 @@
 
     .concert-card.sold-out {
         opacity: 0.7;
+    }
+    
+    /* Card Body */
+    .concert-card .card-body {
+        background: #ffffff !important;
+    }
+    
+    /* Card Title */
+    .concert-card .card-title {
+        color: #2c3e50 !important;
+        font-weight: 700 !important;
+    }
+    
+    /* Concert Info Text */
+    .concert-card .text-muted {
+        color: #6c757d !important;
+    }
+    
+    .concert-card .text-muted strong {
+        color: #2c3e50 !important;
+    }
+    
+    .concert-info small {
+        color: #6c757d !important;
+    }
+    
+    .concert-info strong {
+        color: #2c3e50 !important;
+        font-weight: 600;
     }
 
     .concert-image-wrapper {
@@ -511,6 +562,15 @@
         font-size: 1.25rem;
         margin-top: 0.25rem;
     }
+    
+    /* Price Display */
+    .text-primary {
+        color: #667eea !important;
+    }
+    
+    h4.text-primary {
+        color: #667eea !important;
+    }
 
     .newsletter-card {
         background: var(--primary-gradient);
@@ -523,17 +583,28 @@
         border: none;
         border-radius: 50px 0 0 50px;
         padding: 0.75rem 1.5rem;
+        color: #2c3e50 !important;
+        font-weight: 600;
     }
 
     .newsletter-form button {
         border-radius: 0 50px 50px 0;
         padding: 0.75rem 1.5rem;
         font-weight: 600;
+        color: #2c3e50 !important;
     }
 
     .no-results {
         background: #f8f9fa;
         border-radius: 20px;
+    }
+    
+    .no-results h3 {
+        color: #2c3e50 !important;
+    }
+    
+    .no-results .text-muted {
+        color: #6c757d !important;
     }
 
     .card-hover-effect {

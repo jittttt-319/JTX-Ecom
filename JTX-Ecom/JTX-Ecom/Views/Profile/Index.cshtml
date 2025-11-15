@@ -10,14 +10,14 @@
     <div class="row">
         <div class="col-lg-3 mb-4">
             <!-- Profile Sidebar -->
-            <div class="card">
+            <div class="card profile-sidebar-card">
                 <div class="card-body text-center">
                     <div class="mb-3">
                         <i class="bi bi-person-circle display-1 text-primary"></i>
                     </div>
-                    <h5 class="card-title">@Model.FirstName @Model.LastName</h5>
-                    <p class="text-muted small mb-3">@ViewBag.Email</p>
-                    <p class="text-muted small">
+                    <h5 class="card-title text-dark fw-bold">@Model.FirstName @Model.LastName</h5>
+                    <p class="text-secondary small mb-3 fw-semibold">@ViewBag.Email</p>
+                    <p class="text-secondary small fw-semibold">
                         <i class="bi bi-calendar-check"></i> Member since @ViewBag.MemberSince
                     </p>
                 </div>
@@ -40,69 +40,69 @@
 
         <div class="col-lg-9">
             <!-- Profile Form -->
-            <div class="card">
+            <div class="card profile-form-card">
                 <div class="card-header bg-primary text-white">
-                    <h5 class="mb-0"><i class="bi bi-person-fill"></i> Profile Information</h5>
+                    <h5 class="mb-0 fw-bold"><i class="bi bi-person-fill"></i> Profile Information</h5>
                 </div>
                 <div class="card-body">
                     <form asp-action="Update" method="post">
                         <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
 
-                        <h6 class="mb-3">Personal Information</h6>
+                        <h6 class="mb-3 text-dark fw-bold">Personal Information</h6>
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label asp-for="FirstName" class="form-label">First Name</label>
-                                <input asp-for="FirstName" class="form-control" placeholder="Enter first name" />
+                                <label asp-for="FirstName" class="form-label fw-bold text-dark">First Name</label>
+                                <input asp-for="FirstName" class="form-control form-control-lg" placeholder="Enter first name" />
                                 <span asp-validation-for="FirstName" class="text-danger"></span>
                             </div>
 
                             <div class="col-md-6 mb-3">
-                                <label asp-for="LastName" class="form-label">Last Name</label>
-                                <input asp-for="LastName" class="form-control" placeholder="Enter last name" />
+                                <label asp-for="LastName" class="form-label fw-bold text-dark">Last Name</label>
+                                <input asp-for="LastName" class="form-control form-control-lg" placeholder="Enter last name" />
                                 <span asp-validation-for="LastName" class="text-danger"></span>
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label asp-for="PhoneNumber" class="form-label">Phone Number</label>
-                                <input asp-for="PhoneNumber" class="form-control" placeholder="012-3456789" />
+                                <label asp-for="PhoneNumber" class="form-label fw-bold text-dark">Phone Number</label>
+                                <input asp-for="PhoneNumber" class="form-control form-control-lg" placeholder="012-3456789" />
                                 <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                             </div>
 
                             <div class="col-md-6 mb-3">
-                                <label asp-for="DateOfBirth" class="form-label">Date of Birth</label>
-                                <input asp-for="DateOfBirth" type="date" class="form-control" />
+                                <label asp-for="DateOfBirth" class="form-label fw-bold text-dark">Date of Birth</label>
+                                <input asp-for="DateOfBirth" type="date" class="form-control form-control-lg" />
                                 <span asp-validation-for="DateOfBirth" class="text-danger"></span>
                             </div>
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="ICNumber" class="form-label">IC Number (Malaysian)</label>
-                            <input asp-for="ICNumber" class="form-control" placeholder="123456-01-2345" />
+                            <label asp-for="ICNumber" class="form-label fw-bold text-dark">IC Number (Malaysian)</label>
+                            <input asp-for="ICNumber" class="form-control form-control-lg" placeholder="123456-01-2345" />
                             <span asp-validation-for="ICNumber" class="text-danger"></span>
-                            <small class="form-text text-muted">Format: 123456-01-2345</small>
+                            <small class="form-text text-secondary fw-semibold">Format: 123456-01-2345</small>
                         </div>
 
                         <hr class="my-4">
 
-                        <h6 class="mb-3">Address</h6>
+                        <h6 class="mb-3 text-dark fw-bold">Address</h6>
                         <div class="mb-3">
-                            <label asp-for="Address" class="form-label">Street Address</label>
+                            <label asp-for="Address" class="form-label fw-bold text-dark">Street Address</label>
                             <textarea asp-for="Address" class="form-control" rows="2" placeholder="Enter your address"></textarea>
                             <span asp-validation-for="Address" class="text-danger"></span>
                         </div>
 
                         <div class="row">
                             <div class="col-md-4 mb-3">
-                                <label asp-for="City" class="form-label">City</label>
-                                <input asp-for="City" class="form-control" placeholder="e.g., Kuala Lumpur" />
+                                <label asp-for="City" class="form-label fw-bold text-dark">City</label>
+                                <input asp-for="City" class="form-control form-control-lg" placeholder="e.g., Kuala Lumpur" />
                                 <span asp-validation-for="City" class="text-danger"></span>
                             </div>
 
                             <div class="col-md-4 mb-3">
-                                <label asp-for="State" class="form-label">State</label>
-                                <select asp-for="State" class="form-select">
+                                <label asp-for="State" class="form-label fw-bold text-dark">State</label>
+                                <select asp-for="State" class="form-select form-select-lg">
                                     <option value="">Select State</option>
                                     @foreach (var state in malaysianStates ?? new List<string>())
                                     {
@@ -113,18 +113,18 @@
                             </div>
 
                             <div class="col-md-4 mb-3">
-                                <label asp-for="PostalCode" class="form-label">Postal Code</label>
-                                <input asp-for="PostalCode" class="form-control" placeholder="12345" maxlength="5" />
+                                <label asp-for="PostalCode" class="form-label fw-bold text-dark">Postal Code</label>
+                                <input asp-for="PostalCode" class="form-control form-control-lg" placeholder="12345" maxlength="5" />
                                 <span asp-validation-for="PostalCode" class="text-danger"></span>
                             </div>
                         </div>
 
                         <hr class="my-4">
 
-                        <h6 class="mb-3">Preferences</h6>
+                        <h6 class="mb-3 text-dark fw-bold">Preferences</h6>
                         <div class="form-check mb-3">
                             <input asp-for="ReceiveNewsletter" class="form-check-input" type="checkbox" />
-                            <label asp-for="ReceiveNewsletter" class="form-check-label">
+                            <label asp-for="ReceiveNewsletter" class="form-check-label text-dark fw-semibold">
                                 Subscribe to newsletter and concert updates
                             </label>
                         </div>
@@ -140,6 +140,74 @@
         </div>
     </div>
 </div>
+
+@section Styles {
+<style>
+    .profile-sidebar-card,
+    .profile-form-card {
+        background: #ffffff !important;
+        border: 1px solid #e9ecef;
+        border-radius: 12px;
+    }
+    
+    .profile-sidebar-card .card-body,
+    .profile-form-card .card-body {
+        background: #ffffff !important;
+    }
+    
+    .text-dark {
+        color: #2c3e50 !important;
+    }
+    
+    .text-secondary {
+        color: #6c757d !important;
+    }
+    
+    .card-title, h5, h6 {
+        color: #2c3e50 !important;
+    }
+    
+    .form-label {
+        color: #2c3e50 !important;
+    }
+    
+    .form-control, .form-select {
+        background: #f8f9fa;
+        border: 2px solid #e9ecef;
+        color: #2c3e50 !important;
+        font-weight: 600;
+    }
+    
+    .form-control:focus, .form-select:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        color: #2c3e50 !important;
+    }
+    
+    .form-control::placeholder {
+        color: #95a5a6 !important;
+    }
+    
+    .form-text {
+        color: #6c757d !important;
+    }
+    
+    .list-group-item {
+        color: #2c3e50;
+        font-weight: 600;
+    }
+    
+    .list-group-item.active {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-color: #667eea;
+    }
+    
+    .btn-lg {
+        padding: 0.75rem 2rem;
+        font-weight: 700;
+    }
+</style>
+}
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

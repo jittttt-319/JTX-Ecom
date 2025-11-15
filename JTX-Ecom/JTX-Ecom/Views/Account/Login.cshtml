@@ -8,11 +8,11 @@
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-md-5">
-            <div class="card shadow">
+            <div class="card shadow login-card">
                 <div class="card-body p-5">
                     <div class="text-center mb-4">
-                        <h2 class="fw-bold">Welcome Back</h2>
-                        <p class="text-muted">Login to your account</p>
+                        <h2 class="fw-bold text-dark">Welcome Back</h2>
+                        <p class="text-secondary fw-semibold">Login to your account</p>
                     </div>
 
                     @* Only show success messages that are registration-related *@
@@ -45,14 +45,14 @@
                         <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
 
                         <div class="mb-3">
-                            <label asp-for="Email" class="form-label">Email Address</label>
-                            <input asp-for="Email" class="form-control" placeholder="Enter your email" />
+                            <label asp-for="Email" class="form-label fw-bold text-dark">Email Address</label>
+                            <input asp-for="Email" class="form-control form-control-lg" placeholder="Enter your email" />
                             <span asp-validation-for="Email" class="text-danger"></span>
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="Password" class="form-label">Password</label>
-                            <input asp-for="Password" type="password" class="form-control" 
+                            <label asp-for="Password" class="form-label fw-bold text-dark">Password</label>
+                            <input asp-for="Password" type="password" class="form-control form-control-lg" 
                                    placeholder="Enter your password" />
                             <span asp-validation-for="Password" class="text-danger"></span>
                         </div>
@@ -64,9 +64,9 @@
                         </div>
 
                         <div class="text-center">
-                            <p class="mb-0">
+                            <p class="mb-0 text-dark fw-semibold">
                                 Don't have an account? 
-                                <a asp-action="Register" class="text-decoration-none fw-bold">Sign up here</a>
+                                <a asp-action="Register" class="text-decoration-none fw-bold text-primary">Sign up here</a>
                             </p>
                         </div>
                     </form>
@@ -74,7 +74,7 @@
                     <hr class="my-4">
 
                     <div class="text-center">
-                        <small class="text-muted">
+                        <small class="text-secondary fw-semibold">
                             <strong>Admin Credentials:</strong><br>
                             Email: admin@jtxconcert.com<br>
                             Password: Admin@123
@@ -86,22 +86,67 @@
     </div>
 </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
-
+@section Styles {
 <style>
-    .card {
+    .login-card {
         border: none;
         border-radius: 15px;
+        background: #ffffff !important;
+    }
+    
+    .login-card .card-body {
+        background: #ffffff !important;
+    }
+    
+    .text-dark {
+        color: #2c3e50 !important;
+    }
+    
+    .text-secondary {
+        color: #6c757d !important;
+    }
+    
+    .text-primary {
+        color: #667eea !important;
+    }
+    
+    h2 {
+        color: #2c3e50 !important;
+    }
+    
+    .form-label {
+        color: #2c3e50 !important;
+    }
+    
+    .form-control {
+        background: #f8f9fa;
+        border: 2px solid #e9ecef;
+        color: #2c3e50 !important;
+        font-weight: 600;
+    }
+    
+    .form-control:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        color: #2c3e50 !important;
+    }
+    
+    .form-control::placeholder {
+        color: #95a5a6 !important;
     }
 
     .btn-primary {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         border: none;
+        font-weight: 700;
     }
 
     .btn-primary:hover {
         opacity: 0.9;
     }
 </style>
+}
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

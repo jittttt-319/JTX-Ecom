@@ -20,7 +20,7 @@
     <div class="hero-content container">
         <div class="row">
             <div class="col-lg-8">
-                <span class="badge bg-primary mb-3">@Model.Genre</span>
+                <span class="badge bg-primary mb-3 fs-6">@Model.Genre</span>
                 <h1 class="display-4 fw-bold text-white mb-3">@Model.Title</h1>
                 <p class="lead text-white mb-4">
                     <i class="bi bi-person-fill"></i> @Model.Artist
@@ -35,15 +35,15 @@
         <!-- Main Content -->
         <div class="col-lg-8 mb-4">
             <!-- Concert Info Card -->
-            <div class="card shadow-sm mb-4">
+            <div class="card shadow-sm mb-4 details-card">
                 <div class="card-body">
-                    <h3 class="card-title mb-4">
+                    <h3 class="card-title mb-4 text-dark fw-bold">
                         <i class="bi bi-info-circle-fill text-primary"></i> Event Details
                     </h3>
                     
                     @if (!string.IsNullOrEmpty(Model.Description))
                     {
-                        <p class="lead mb-4">@Model.Description</p>
+                        <p class="lead mb-4 text-dark">@Model.Description</p>
                     }
 
                     <div class="row g-4">
@@ -51,9 +51,9 @@
                             <div class="d-flex align-items-start">
                                 <i class="bi bi-calendar-event-fill text-primary fs-4 me-3"></i>
                                 <div>
-                                    <h6 class="mb-1 text-muted">Date</h6>
-                                    <p class="mb-0 fw-bold">@Model.EventDate.ToString("MMMM dd, yyyy")</p>
-                                    <p class="text-muted small mb-0">@Model.EventDate.DayOfWeek</p>
+                                    <h6 class="mb-1 text-secondary">Date</h6>
+                                    <p class="mb-0 fw-bold text-dark">@Model.EventDate.ToString("MMMM dd, yyyy")</p>
+                                    <p class="text-secondary small mb-0">@Model.EventDate.DayOfWeek</p>
                                 </div>
                             </div>
                         </div>
@@ -62,9 +62,9 @@
                             <div class="d-flex align-items-start">
                                 <i class="bi bi-clock-fill text-primary fs-4 me-3"></i>
                                 <div>
-                                    <h6 class="mb-1 text-muted">Time</h6>
-                                    <p class="mb-0 fw-bold">@Model.EventTime.ToString("hh:mm tt")</p>
-                                    <p class="text-muted small mb-0">Doors open 30 min earlier</p>
+                                    <h6 class="mb-1 text-secondary">Time</h6>
+                                    <p class="mb-0 fw-bold text-dark">@Model.EventTime.ToString("hh:mm tt")</p>
+                                    <p class="text-secondary small mb-0">Doors open 30 min earlier</p>
                                 </div>
                             </div>
                         </div>
@@ -73,9 +73,9 @@
                             <div class="d-flex align-items-start">
                                 <i class="bi bi-building text-primary fs-4 me-3"></i>
                                 <div>
-                                    <h6 class="mb-1 text-muted">Venue</h6>
-                                    <p class="mb-0 fw-bold">@Model.Venue?.Name</p>
-                                    <p class="text-muted small mb-0">Capacity: @Model.Venue?.Capacity.ToString("N0")</p>
+                                    <h6 class="mb-1 text-secondary">Venue</h6>
+                                    <p class="mb-0 fw-bold text-dark">@Model.Venue?.Name</p>
+                                    <p class="text-secondary small mb-0">Capacity: @Model.Venue?.Capacity.ToString("N0")</p>
                                 </div>
                             </div>
                         </div>
@@ -84,9 +84,9 @@
                             <div class="d-flex align-items-start">
                                 <i class="bi bi-geo-alt-fill text-primary fs-4 me-3"></i>
                                 <div>
-                                    <h6 class="mb-1 text-muted">Location</h6>
-                                    <p class="mb-0 fw-bold">@Model.Venue?.City, @Model.Venue?.State</p>
-                                    <p class="text-muted small mb-0">@Model.Venue?.Address</p>
+                                    <h6 class="mb-1 text-secondary">Location</h6>
+                                    <p class="mb-0 fw-bold text-dark">@Model.Venue?.City, @Model.Venue?.State</p>
+                                    <p class="text-secondary small mb-0">@Model.Venue?.Address</p>
                                 </div>
                             </div>
                         </div>
@@ -97,24 +97,24 @@
             <!-- Venue Information Card -->
             @if (Model.Venue != null)
             {
-                <div class="card shadow-sm">
+                <div class="card shadow-sm details-card">
                     <div class="card-body">
-                        <h3 class="card-title mb-4">
+                        <h3 class="card-title mb-4 text-dark fw-bold">
                             <i class="bi bi-building text-primary"></i> Venue Information
                         </h3>
                         
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <p class="mb-1"><strong>Venue:</strong></p>
-                                <p class="text-muted">@Model.Venue.Name</p>
+                                <p class="mb-1 fw-bold text-dark">Venue:</p>
+                                <p class="text-secondary">@Model.Venue.Name</p>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <p class="mb-1"><strong>Capacity:</strong></p>
-                                <p class="text-muted">@Model.Venue.Capacity.ToString("N0") people</p>
+                                <p class="mb-1 fw-bold text-dark">Capacity:</p>
+                                <p class="text-secondary">@Model.Venue.Capacity.ToString("N0") people</p>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <p class="mb-1"><strong>Address:</strong></p>
-                                <p class="text-muted">
+                                <p class="mb-1 fw-bold text-dark">Address:</p>
+                                <p class="text-secondary">
                                     @Model.Venue.Address<br>
                                     @Model.Venue.City, @Model.Venue.State @Model.Venue.ZipCode
                                 </p>
@@ -122,8 +122,8 @@
                             @if (!string.IsNullOrEmpty(Model.Venue.PhoneNumber))
                             {
                                 <div class="col-md-6 mb-3">
-                                    <p class="mb-1"><strong>Phone:</strong></p>
-                                    <p class="text-muted">@Model.Venue.PhoneNumber</p>
+                                    <p class="mb-1 fw-bold text-dark">Phone:</p>
+                                    <p class="text-secondary">@Model.Venue.PhoneNumber</p>
                                 </div>
                             }
                         </div>
@@ -135,22 +135,22 @@
         <!-- Sidebar -->
         <div class="col-lg-4">
             <!-- Ticket Purchase Card -->
-            <div class="card shadow-sm sticky-top" style="top: 20px;">
+            <div class="card shadow-sm sticky-top details-card" style="top: 20px;">
                 <div class="card-body">
-                    <h4 class="card-title mb-4">Get Your Tickets</h4>
+                    <h4 class="card-title mb-4 text-dark fw-bold">Get Your Tickets</h4>
                     
                     <!-- Price -->
                     <div class="text-center mb-4 p-3 bg-light rounded">
-                        <p class="text-muted mb-1">Starting from</p>
-                        <h2 class="text-primary fw-bold mb-0">$@Model.BasePrice.ToString("N2")</h2>
-                        <p class="text-muted small mb-0">per ticket</p>
+                        <p class="text-secondary mb-1 fw-semibold">Starting from</p>
+                        <h2 class="text-primary fw-bold mb-0">RM @Model.BasePrice.ToString("N2")</h2>
+                        <p class="text-secondary small mb-0">per ticket</p>
                     </div>
 
                     <!-- Availability -->
                     <div class="mb-4">
                         <div class="d-flex justify-content-between align-items-center mb-2">
-                            <span class="text-muted">Availability</span>
-                            <span class="badge bg-@(availabilityPercent > 50 ? "success" : availabilityPercent > 20 ? "warning" : "danger")">
+                            <span class="text-dark fw-semibold">Availability</span>
+                            <span class="badge bg-@(availabilityPercent > 50 ? "success" : availabilityPercent > 20 ? "warning" : "danger") px-3 py-2">
                                 @availabilityPercent% Available
                             </span>
                         </div>
@@ -165,7 +165,7 @@
                             </div>
                         </div>
                         
-                        <p class="text-muted small mb-0">
+                        <p class="text-secondary small mb-0 fw-semibold">
                             @Model.AvailableTickets of @Model.TotalTickets tickets remaining
                         </p>
                     </div>
@@ -178,8 +178,8 @@
                             <input type="hidden" name="ConcertId" value="@Model.ConcertId" />
                             
                             <div class="mb-3">
-                                <label for="ticketType" class="form-label fw-bold">Ticket Type</label>
-                                <select name="TicketType" id="ticketType" class="form-select" required>
+                                <label for="ticketType" class="form-label fw-bold text-dark">Ticket Type</label>
+                                <select name="TicketType" id="ticketType" class="form-select form-select-lg" required>
                                     <option value="General">General - RM @Model.BasePrice.ToString("N2")</option>
                                     <option value="VIP">VIP - RM @((Model.BasePrice * 2.0m).ToString("N2"))</option>
                                     <option value="VVIP">VVIP - RM @((Model.BasePrice * 3.5m).ToString("N2"))</option>
@@ -187,8 +187,8 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="quantity" class="form-label fw-bold">Quantity</label>
-                                <select name="Quantity" id="quantity" class="form-select" required>
+                                <label for="quantity" class="form-label fw-bold text-dark">Quantity</label>
+                                <select name="Quantity" id="quantity" class="form-select form-select-lg" required>
                                     @for (int i = 1; i <= Math.Min(10, Model.AvailableTickets); i++)
                                     {
                                         <option value="@i">@i ticket@(i > 1 ? "s" : "")</option>
@@ -211,7 +211,7 @@
                             }
                         </form>
 
-                        <p class="text-center text-muted small mb-0">
+                        <p class="text-center text-secondary small mb-0 fw-semibold">
                             <i class="bi bi-info-circle"></i> Prices in Malaysian Ringgit (RM)
                         </p>
                     }
@@ -227,17 +227,17 @@
                     <hr class="my-4">
 
                     <!-- Additional Info -->
-                    <div class="small text-muted">
-                        <p class="mb-2">
-                            <i class="bi bi-shield-check"></i> 
+                    <div class="small text-dark">
+                        <p class="mb-2 fw-semibold">
+                            <i class="bi bi-shield-check text-success"></i> 
                             Secure checkout
                         </p>
-                        <p class="mb-2">
-                            <i class="bi bi-arrow-clockwise"></i> 
+                        <p class="mb-2 fw-semibold">
+                            <i class="bi bi-arrow-clockwise text-info"></i> 
                             Free cancellation up to 24h
                         </p>
-                        <p class="mb-0">
-                            <i class="bi bi-phone"></i> 
+                        <p class="mb-0 fw-semibold">
+                            <i class="bi bi-phone text-primary"></i> 
                             24/7 customer support
                         </p>
                     </div>
@@ -247,17 +247,18 @@
     </div>
 
     <!-- Back to Concerts Button -->
-    <div class="row mt-4">
+    <div class="row mt-4 mb-5">
         <div class="col-12">
-            <a asp-action="Index" class="btn btn-outline-secondary">
+            <a asp-action="Index" class="btn btn-outline-primary btn-lg">
                 <i class="bi bi-arrow-left"></i> Back to All Concerts
             </a>
         </div>
     </div>
 </div>
 
-<!-- Custom Styles -->
+@section Styles {
 <style>
+    /* Concert Details Page Specific Styles */
     .concert-hero {
         height: 400px;
         position: relative;
@@ -298,4 +299,59 @@
         position: -webkit-sticky;
         position: sticky;
     }
+    
+    /* Card Styling for Better Visibility */
+    .details-card {
+        background: #ffffff !important;
+        border: 1px solid #e9ecef;
+    }
+    
+    .details-card .card-body {
+        background: #ffffff !important;
+    }
+    
+    /* Text Color Improvements */
+    .text-dark {
+        color: #2c3e50 !important;
+    }
+    
+    .text-secondary {
+        color: #6c757d !important;
+    }
+    
+    .card-title {
+        color: #2c3e50 !important;
+    }
+    
+    /* Form Elements */
+    .form-select, .form-control {
+        background: #f8f9fa;
+        border: 2px solid #e9ecef;
+        color: #2c3e50 !important;
+        font-weight: 600;
+    }
+    
+    .form-select:focus, .form-control:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        color: #2c3e50 !important;
+    }
+    
+    .form-label {
+        color: #2c3e50 !important;
+        font-weight: 700;
+    }
+    
+    /* Button Improvements */
+    .btn-lg {
+        padding: 0.75rem 2rem;
+        font-weight: 700;
+    }
+    
+    /* Badge Improvements */
+    .badge {
+        font-size: 0.9rem;
+        font-weight: 700;
+    }
 </style>
+}
