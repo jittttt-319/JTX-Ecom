@@ -20,6 +20,9 @@ namespace JTX_Ecom.Data
         public DbSet<Venue> Venues { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<Order> Orders { get; set; }
+        public DbSet<UserProfile> UserProfiles { get; set; }
+        public DbSet<Cart> Carts { get; set; }
+        public DbSet<CartItem> CartItems { get; set; }
 
         /// <summary>
         /// Configure entity relationships and constraints
@@ -96,6 +99,49 @@ namespace JTX_Ecom.Data
                 entity.HasIndex(o => o.CustomerEmail);
             });
 
+            // Configure UserProfile entity
+            modelBuilder.Entity<UserProfile>(entity =>
+            {
+                entity.HasKey(p => p.ProfileId);
+                
+                entity.HasOne(p => p.User)
+                    .WithOne(u => u.Profile)
+                    .HasForeignKey<UserProfile>(p => p.UserId)
+                    .OnDelete(DeleteBehavior.Cascade);
+                    
+                entity.HasIndex(p => p.UserId).IsUnique();
+            });
+
+            // Configure Cart entity
+            modelBuilder.Entity<Cart>(entity =>
+            {
+                entity.HasKey(c => c.CartId);
+                
+                entity.HasOne(c => c.User)
+                    .WithOne(u => u.Cart)
+                    .HasForeignKey<Cart>(c => c.UserId)
+                    .OnDelete(DeleteBehavior.Cascade);
+                    
+                entity.HasIndex(c => c.UserId).IsUnique();
+            });
+
+            // Configure CartItem entity
+            modelBuilder.Entity<CartItem>(entity =>
+            {
+                entity.HasKey(ci => ci.CartItemId);
+                entity.Property(ci => ci.PricePerTicket).HasPrecision(18, 2);
+                
+                entity.HasOne(ci => ci.Cart)
+                    .WithMany(c => c.CartItems)
+                    .HasForeignKey(ci => ci.CartId)
+                    .OnDelete(DeleteBehavior.Cascade);
+                    
+                entity.HasOne(ci => ci.Concert)
+                    .WithMany()
+                    .HasForeignKey(ci => ci.ConcertId)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
+
             // Seed initial data
             SeedData(modelBuilder);
         }
@@ -108,102 +154,102 @@ namespace JTX_Ecom.Data
             // Use a static date for seed data
             var seedDate = new DateTime(2025, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
-            // Seed Venues
+            // Seed Venues - Malaysian venues
             modelBuilder.Entity<Venue>().HasData(
                 new Venue
                 {
                     VenueId = 1,
-                    Name = "Madison Square Garden",
-                    Address = "4 Pennsylvania Plaza",
-                    City = "New York",
-                    State = "NY",
-                    ZipCode = "10001",
-                    Country = "USA",
-                    Capacity = 20000,
-                    PhoneNumber = "(212) 465-6741",
+                    Name = "Bukit Jalil National Stadium",
+                    Address = "Bukit Jalil",
+                    City = "Kuala Lumpur",
+                    State = "Wilayah Persekutuan",
+                    ZipCode = "57000",
+                    Country = "Malaysia",
+                    Capacity = 87411,
+                    PhoneNumber = "03-8992 9000",
                     CreatedAt = seedDate
                 },
                 new Venue
                 {
                     VenueId = 2,
-                    Name = "Staples Center",
-                    Address = "1111 S Figueroa St",
-                    City = "Los Angeles",
-                    State = "CA",
-                    ZipCode = "90015",
-                    Country = "USA",
-                    Capacity = 19000,
-                    PhoneNumber = "(213) 742-7100",
+                    Name = "Axiata Arena",
+                    Address = "Jalan Barat, Bukit Jalil",
+                    City = "Kuala Lumpur",
+                    State = "Wilayah Persekutuan",
+                    ZipCode = "57000",
+                    Country = "Malaysia",
+                    Capacity = 16000,
+                    PhoneNumber = "03-8992 8833",
                     CreatedAt = seedDate
                 },
                 new Venue
                 {
                     VenueId = 3,
-                    Name = "Blue Note",
-                    Address = "131 W 3rd St",
-                    City = "Chicago",
-                    State = "IL",
-                    ZipCode = "60601",
-                    Country = "USA",
-                    Capacity = 500,
-                    PhoneNumber = "(312) 555-0123",
+                    Name = "Mega Star Arena",
+                    Address = "Jalan Lagenda",
+                    City = "Kuala Lumpur",
+                    State = "Wilayah Persekutuan",
+                    ZipCode = "59200",
+                    Country = "Malaysia",
+                    Capacity = 3500,
+                    PhoneNumber = "03-7784 8000",
                     CreatedAt = seedDate
                 },
                 new Venue
                 {
                     VenueId = 4,
-                    Name = "Ultra Arena",
-                    Address = "1 Brickell City Centre",
-                    City = "Miami",
-                    State = "FL",
-                    ZipCode = "33131",
-                    Country = "USA",
-                    Capacity = 10000,
-                    PhoneNumber = "(305) 555-0199",
+                    Name = "Sepang International Circuit",
+                    Address = "Jalan Pekeliling",
+                    City = "Sepang",
+                    State = "Selangor",
+                    ZipCode = "64000",
+                    Country = "Malaysia",
+                    Capacity = 130000,
+                    PhoneNumber = "03-8778 2222",
                     CreatedAt = seedDate
                 },
                 new Venue
                 {
                     VenueId = 5,
-                    Name = "Grand Ole Opry",
-                    Address = "2804 Opryland Dr",
-                    City = "Nashville",
-                    State = "TN",
-                    ZipCode = "37214",
-                    Country = "USA",
-                    Capacity = 4400,
-                    PhoneNumber = "(615) 871-6779",
+                    Name = "Borneo Convention Centre Kuching",
+                    Address = "Jalan Tunku Abdul Rahman",
+                    City = "Kuching",
+                    State = "Sarawak",
+                    ZipCode = "93100",
+                    Country = "Malaysia",
+                    Capacity = 5000,
+                    PhoneNumber = "082-423600",
                     CreatedAt = seedDate
                 },
                 new Venue
                 {
                     VenueId = 6,
-                    Name = "Barclays Center",
-                    Address = "620 Atlantic Ave",
-                    City = "Brooklyn",
-                    State = "NY",
-                    ZipCode = "11217",
-                    Country = "USA",
-                    Capacity = 19000,
-                    PhoneNumber = "(917) 618-6100",
+                    Name = "Penang International Sports Arena",
+                    Address = "Jalan Pemancar",
+                    City = "Bayan Lepas",
+                    State = "Pulau Pinang",
+                    ZipCode = "11900",
+                    Country = "Malaysia",
+                    Capacity = 40000,
+                    PhoneNumber = "04-643 6688",
                     CreatedAt = seedDate
                 }
             );
 
-            // Seed Concerts
+            // Seed Concerts - with Malaysian pricing (RM)
             modelBuilder.Entity<Concert>().HasData(
                 new Concert
                 {
                     ConcertId = 1,
-                    Title = "Rock Festival 2025",
-                    Description = "The biggest rock festival of the year featuring top rock bands",
+                    Title = "Malaysian Music Festival 2025",
+                    Description = "The biggest music festival in Malaysia featuring top local and international artists",
                     EventDate = new DateTime(2025, 3, 15),
                     EventTime = new DateTime(2025, 3, 15, 19, 0, 0),
-                    Artist = "Various Rock Artists",
+                    Artist = "Various Artists",
                     Genre = "Rock",
-                    BasePrice = 89.00m,
-                    AvailableTickets = 15000,
-                    TotalTickets = 20000,
+                    BasePrice = 250.00m, // RM250
+                    AvailableTickets = 80000,
+                    TotalTickets = 87000,
                     VenueId = 1,
                     ImageUrl = "/assets/images/concerts/concert1.jpg",
                     CreatedAt = seedDate
@@ -211,15 +257,15 @@ namespace JTX_Ecom.Data
                 new Concert
                 {
                     ConcertId = 2,
-                    Title = "Pop Extravaganza",
-                    Description = "A spectacular pop music experience with chart-topping artists",
+                    Title = "Pop Extravaganza KL",
+                    Description = "International pop stars live in Kuala Lumpur",
                     EventDate = new DateTime(2025, 4, 5),
                     EventTime = new DateTime(2025, 4, 5, 20, 0, 0),
                     Artist = "Top Pop Stars",
                     Genre = "Pop",
-                    BasePrice = 125.00m,
-                    AvailableTickets = 18000,
-                    TotalTickets = 19000,
+                    BasePrice = 350.00m, // RM350
+                    AvailableTickets = 14500,
+                    TotalTickets = 16000,
                     VenueId = 2,
                     ImageUrl = "/assets/images/concerts/concert2.jpg",
                     CreatedAt = seedDate
@@ -227,15 +273,15 @@ namespace JTX_Ecom.Data
                 new Concert
                 {
                     ConcertId = 3,
-                    Title = "Jazz Night Live",
-                    Description = "An intimate evening of smooth jazz and soul",
+                    Title = "Jazz Night KL",
+                    Description = "An intimate evening of smooth jazz featuring Malaysian and international artists",
                     EventDate = new DateTime(2025, 4, 20),
                     EventTime = new DateTime(2025, 4, 20, 21, 0, 0),
-                    Artist = "Jazz Ensemble",
+                    Artist = "Jazz Ensemble Malaysia",
                     Genre = "Jazz",
-                    BasePrice = 65.00m,
-                    AvailableTickets = 450,
-                    TotalTickets = 500,
+                    BasePrice = 180.00m, // RM180
+                    AvailableTickets = 3200,
+                    TotalTickets = 3500,
                     VenueId = 3,
                     ImageUrl = "/assets/images/concerts/concert3.jpg",
                     CreatedAt = seedDate
@@ -243,48 +289,48 @@ namespace JTX_Ecom.Data
                 new Concert
                 {
                     ConcertId = 4,
-                    Title = "Electronic Dance Night",
-                    Description = "Ultimate EDM experience with world-class DJs",
-                    EventDate = new DateTime(2025, 5, 10),
-                    EventTime = new DateTime(2025, 5, 10, 22, 0, 0),
-                    Artist = "Top EDM DJs",
-                    Genre = "Electronic",
-                    BasePrice = 149.00m,
-                    AvailableTickets = 9500,
-                    TotalTickets = 10000,
-                    VenueId = 4,
+                    Title = "Rainforest World Music Festival",
+                    Description = "Experience world music in the heart of Borneo",
+                    EventDate = new DateTime(2025, 6, 14),
+                    EventTime = new DateTime(2025, 6, 14, 18, 0, 0),
+                    Artist = "World Music Artists",
+                    Genre = "World Music",
+                    BasePrice = 220.00m, // RM220
+                    AvailableTickets = 4500,
+                    TotalTickets = 5000,
+                    VenueId = 5,
                     ImageUrl = "/assets/images/concerts/concert4.jpg",
                     CreatedAt = seedDate
                 },
                 new Concert
                 {
                     ConcertId = 5,
-                    Title = "Country Music Fest",
-                    Description = "Celebrating country music heritage with legendary performers",
-                    EventDate = new DateTime(2025, 6, 2),
-                    EventTime = new DateTime(2025, 6, 2, 19, 30, 0),
-                    Artist = "Country Legends",
-                    Genre = "Country",
-                    BasePrice = 79.00m,
-                    AvailableTickets = 4200,
-                    TotalTickets = 4400,
-                    VenueId = 5,
+                    Title = "Good Vibes Festival 2025",
+                    Description = "Malaysia's premier indie music festival",
+                    EventDate = new DateTime(2025, 7, 19),
+                    EventTime = new DateTime(2025, 7, 19, 14, 0, 0),
+                    Artist = "Indie Bands Malaysia",
+                    Genre = "Alternative",
+                    BasePrice = 199.00m, // RM199
+                    AvailableTickets = 35000,
+                    TotalTickets = 40000,
+                    VenueId = 6,
                     ImageUrl = "/assets/images/concerts/concert5.jpg",
                     CreatedAt = seedDate
                 },
                 new Concert
                 {
                     ConcertId = 6,
-                    Title = "Hip Hop Summit",
-                    Description = "The hottest hip hop artists live on stage",
-                    EventDate = new DateTime(2025, 6, 21),
-                    EventTime = new DateTime(2025, 6, 21, 20, 0, 0),
-                    Artist = "Hip Hop All-Stars",
-                    Genre = "Hip Hop",
-                    BasePrice = 95.00m,
-                    AvailableTickets = 17500,
-                    TotalTickets = 19000,
-                    VenueId = 6,
+                    Title = "Electronic Dance Music Festival",
+                    Description = "The ultimate EDM experience with world-class DJs",
+                    EventDate = new DateTime(2025, 8, 9),
+                    EventTime = new DateTime(2025, 8, 9, 22, 0, 0),
+                    Artist = "Top EDM DJs",
+                    Genre = "Electronic",
+                    BasePrice = 420.00m, // RM420
+                    AvailableTickets = 120000,
+                    TotalTickets = 130000,
+                    VenueId = 4,
                     ImageUrl = "/assets/images/concerts/concert6.jpg",
                     CreatedAt = seedDate
                 }

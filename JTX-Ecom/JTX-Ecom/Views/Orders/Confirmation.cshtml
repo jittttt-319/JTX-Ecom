@@ -1,0 +1,131 @@
+@model JTX_Ecom.Models.DTOs.OrderConfirmationDto
+
+@{
+    ViewData["Title"] = "Order Confirmation";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Success Message -->
+            <div class="card border-success mb-4">
+                <div class="card-body text-center py-5">
+                    <div class="mb-4">
+                        <i class="bi bi-check-circle-fill text-success" style="font-size: 80px;"></i>
+                    </div>
+                    <h2 class="text-success mb-3">Payment Successful!</h2>
+                    <p class="lead mb-4">Thank you for your purchase. Your tickets have been confirmed.</p>
+                    <div class="alert alert-light border">
+                        <h4 class="mb-2">Order Number</h4>
+                        <h3 class="text-primary mb-0">@Model.OrderNumber</h3>
+                    </div>
+                    <p class="text-muted">
+                        A confirmation email has been sent to your email address with your ticket details.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Order Details -->
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="bi bi-receipt"></i> Order Details</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <p class="text-muted mb-1">Order Date</p>
+                            <p class="fw-bold">@Model.OrderDate.ToString("dd MMMM yyyy, hh:mm tt")</p>
+                        </div>
+                        <div class="col-6 text-end">
+                            <p class="text-muted mb-1">Payment Status</p>
+                            <span class="badge bg-success fs-6">@Model.PaymentStatus</span>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <!-- Tickets -->
+                    <h5 class="mb-3">Your Tickets</h5>
+                    @foreach (var item in Model.Items)
+                    {
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <h5 class="card-title">@item.ConcertTitle</h5>
+                                        <p class="card-text mb-2">
+                                            <i class="bi bi-person-fill"></i> @item.Artist<br>
+                                            <i class="bi bi-calendar-event"></i> @item.EventDate.ToString("dd MMMM yyyy")<br>
+                                            <i class="bi bi-geo-alt-fill"></i> @item.VenueName
+                                        </p>
+                                        <span class="badge bg-primary">@item.TicketType</span>
+                                        <span class="badge bg-secondary">@item.Quantity ticket(s)</span>
+                                    </div>
+                                    <div class="col-md-4 text-end">
+                                        <h4 class="text-primary">RM @item.Price.ToString("N2")</h4>
+                                    </div>
+                                </div>
+                                
+                                @if (item.TicketNumbers.Any())
+                                {
+                                    <hr>
+                                    <div class="mt-3">
+                                        <p class="mb-2"><strong>Ticket Numbers:</strong></p>
+                                        <div class="d-flex flex-wrap gap-2">
+                                            @foreach (var ticketNumber in item.TicketNumbers)
+                                            {
+                                                <span class="badge bg-light text-dark border">@ticketNumber</span>
+                                            }
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+
+                    <hr>
+
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0">Total Amount</h4>
+                        <h3 class="mb-0 text-primary">RM @Model.TotalAmount.ToString("N2")</h3>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="card">
+                <div class="card-body text-center">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <a asp-controller="Orders" asp-action="MyTickets" class="btn btn-primary w-100">
+                                <i class="bi bi-ticket-perforated"></i> View My Tickets
+                            </a>
+                        </div>
+                        <div class="col-md-4">
+                            <a asp-controller="Orders" asp-action="Details" asp-route-id="@ViewBag.OrderId" class="btn btn-outline-primary w-100">
+                                <i class="bi bi-file-text"></i> View Order Details
+                            </a>
+                        </div>
+                        <div class="col-md-4">
+                            <a asp-controller="Concerts" asp-action="Index" class="btn btn-outline-secondary w-100">
+                                <i class="bi bi-search"></i> Browse More Concerts
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Important Information -->
+            <div class="alert alert-info mt-4">
+                <h6 class="alert-heading"><i class="bi bi-info-circle-fill"></i> Important Information</h6>
+                <ul class="mb-0">
+                    <li>Please bring a valid ID to the venue</li>
+                    <li>Show your ticket QR code at the entrance</li>
+                    <li>Arrive at least 30 minutes before the event</li>
+                    <li>Tickets are non-transferable and non-refundable</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

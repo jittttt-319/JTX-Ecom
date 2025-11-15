@@ -1,0 +1,195 @@
+@model JTX_Ecom.Models.Ticket
+
+@{
+    ViewData["Title"] = "Ticket Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var isUpcoming = Model.Concert!.EventDate > DateTime.Now;
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <a asp-action="MyTickets" class="btn btn-outline-secondary mb-4">
+                <i class="bi bi-arrow-left"></i> Back to My Tickets
+            </a>
+
+            <!-- Ticket Card -->
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white text-center py-4">
+                    <h3 class="mb-0"><i class="bi bi-ticket-perforated-fill"></i> Concert Ticket</h3>
+                </div>
+                <div class="card-body p-4">
+                    <!-- QR Code Section -->
+                    <div class="text-center mb-4">
+                        <div class="border rounded p-4 bg-light">
+                            @if (!string.IsNullOrEmpty(Model.QRCode))
+                            {
+                                <!-- In production, generate actual QR code image -->
+                                <div class="qr-code-placeholder bg-white p-4 d-inline-block border">
+                                    <i class="bi bi-qr-code display-1"></i>
+                                    <p class="mt-2 mb-0"><small>@Model.QRCode</small></p>
+                                </div>
+                            }
+                            else
+                            {
+                                <i class="bi bi-qr-code display-1 text-muted"></i>
+                            }
+                        </div>
+                        <p class="text-muted mt-2 mb-0">
+                            <i class="bi bi-info-circle"></i> Show this QR code at the venue entrance
+                        </p>
+                    </div>
+
+                    <hr>
+
+                    <!-- Concert Details -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h4 class="mb-3">@Model.Concert?.Title</h4>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <p class="text-muted mb-1"><i class="bi bi-person-fill"></i> Artist</p>
+                            <h6>@Model.Concert?.Artist</h6>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <p class="text-muted mb-1"><i class="bi bi-ticket-perforated"></i> Ticket Type</p>
+                            <h6><span class="badge bg-primary fs-6">@Model.TicketType</span></h6>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <p class="text-muted mb-1"><i class="bi bi-calendar-event"></i> Event Date</p>
+                            <h6>@Model.Concert?.EventDate.ToString("dddd, dd MMMM yyyy")</h6>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <p class="text-muted mb-1"><i class="bi bi-clock"></i> Event Time</p>
+                            <h6>@Model.Concert?.EventTime.ToString("hh:mm tt")</h6>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <p class="text-muted mb-1"><i class="bi bi-building"></i> Venue</p>
+                            <h6>@Model.Concert?.Venue?.Name</h6>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <p class="text-muted mb-1"><i class="bi bi-geo-alt-fill"></i> Location</p>
+                            <h6>@Model.Concert?.Venue?.City, @Model.Concert?.Venue?.State</h6>
+                        </div>
+                        @if (!string.IsNullOrEmpty(Model.SeatNumber))
+                        {
+                            <div class="col-md-6 mb-3">
+                                <p class="text-muted mb-1"><i class="bi bi-bookmark-fill"></i> Seat Number</p>
+                                <h6><span class="badge bg-info fs-6">@Model.SeatNumber</span></h6>
+                            </div>
+                        }
+                    </div>
+
+                    <hr>
+
+                    <!-- Ticket Information -->
+                    <div class="row mb-4">
+                        <div class="col-md-6 mb-3">
+                            <p class="text-muted mb-1">Ticket Number</p>
+                            <h6><code>@Model.TicketNumber</code></h6>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <p class="text-muted mb-1">Price</p>
+                            <h6 class="text-primary">RM @Model.Price.ToString("N2")</h6>
+                        </div>
+                        @if (Model.PurchaseDate.HasValue)
+                        {
+                            <div class="col-md-6 mb-3">
+                                <p class="text-muted mb-1">Purchase Date</p>
+                                <h6>@Model.PurchaseDate.Value.ToString("dd MMMM yyyy")</h6>
+                            </div>
+                        }
+                        <div class="col-md-6 mb-3">
+                            <p class="text-muted mb-1">Status</p>
+                            <span class="badge bg-@(Model.Status == "Sold" ? "success" : "secondary") fs-6">@Model.Status</span>
+                        </div>
+                    </div>
+
+                    @if (isUpcoming)
+                    {
+                        <hr>
+
+                        <!-- Important Information -->
+                        <div class="alert alert-info mb-0">
+                            <h6 class="alert-heading"><i class="bi bi-info-circle-fill"></i> Important Information</h6>
+                            <ul class="mb-0 small">
+                                <li>Please arrive at least 30 minutes before the event start time</li>
+                                <li>Bring a valid government-issued ID for verification</li>
+                                <li>This ticket is non-transferable and non-refundable</li>
+                                <li>Screenshots will not be accepted - show the original QR code</li>
+                                <li>Follow the venue's health and safety guidelines</li>
+                            </ul>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-secondary mb-0">
+                            <p class="mb-0">
+                                <i class="bi bi-check-circle-fill"></i> 
+                                <strong>This event has passed</strong> - Thank you for attending!
+                            </p>
+                        </div>
+                    }
+                </div>
+                <div class="card-footer text-center bg-light">
+                    <div class="row g-2">
+                        <div class="col-md-6">
+                            <a asp-controller="Orders" asp-action="Details" asp-route-id="@Model.OrderId" class="btn btn-outline-primary w-100">
+                                <i class="bi bi-receipt"></i> View Order
+                            </a>
+                        </div>
+                        <div class="col-md-6">
+                            <button class="btn btn-primary w-100" onclick="window.print()">
+                                <i class="bi bi-printer"></i> Print Ticket
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Venue Information -->
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="bi bi-map"></i> Venue Information</h5>
+                </div>
+                <div class="card-body">
+                    <h6>@Model.Concert?.Venue?.Name</h6>
+                    <p class="mb-2">
+                        @Model.Concert?.Venue?.Address<br>
+                        @Model.Concert?.Venue?.City, @Model.Concert?.Venue?.State @Model.Concert?.Venue?.ZipCode<br>
+                        @Model.Concert?.Venue?.Country
+                    </p>
+                    @if (!string.IsNullOrEmpty(Model.Concert?.Venue?.PhoneNumber))
+                    {
+                        <p class="mb-0">
+                            <i class="bi bi-telephone"></i> @Model.Concert?.Venue?.PhoneNumber
+                        </p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        @@media print {
+            .btn, .alert, nav, footer, .card-footer {
+                display: none !important;
+            }
+            .card {
+                border: 2px solid #000 !important;
+                box-shadow: none !important;
+            }
+        }
+        
+        .qr-code-placeholder {
+            min-width: 200px;
+            min-height: 200px;
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+}

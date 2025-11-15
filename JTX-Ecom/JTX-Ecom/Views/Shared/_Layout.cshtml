@@ -38,6 +38,14 @@
                     <ul class="navbar-nav">
                         @if (User.Identity?.IsAuthenticated == true)
                         {
+                            <!-- Cart Icon -->
+                            <li class="nav-item">
+                                <a class="nav-link position-relative" asp-controller="Cart" asp-action="Index">
+                                    <i class="bi bi-cart3 fs-5"></i>
+                                    <!-- Cart badge would go here with item count -->
+                                </a>
+                            </li>
+                            
                             @if (User.IsInRole("Admin"))
                             {
                                 <li class="nav-item">
@@ -46,14 +54,28 @@
                                     </a>
                                 </li>
                             }
+                            
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" 
                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="fas fa-user-circle"></i> @User.Identity.Name
+                                    <i class="bi bi-person-circle fs-5"></i> @User.Identity.Name
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <li><a class="dropdown-item" href="#"><i class="bi bi-ticket"></i> My Tickets</a></li>
-                                    <li><a class="dropdown-item" href="#"><i class="bi bi-person"></i> Profile</a></li>
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="Profile" asp-action="Index">
+                                            <i class="bi bi-person"></i> My Profile
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="Orders" asp-action="MyTickets">
+                                            <i class="bi bi-ticket-perforated"></i> My Tickets
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="Orders" asp-action="Index">
+                                            <i class="bi bi-bag-check"></i> My Orders
+                                        </a>
+                                    </li>
                                     <li><hr class="dropdown-divider"></li>
                                     <li>
                                         <form method="post" asp-controller="Account" asp-action="Logout" class="d-inline">
@@ -69,12 +91,12 @@
                         {
                             <li class="nav-item">
                                 <a class="nav-link" asp-controller="Account" asp-action="Login">
-                                    <i class="fas fa-sign-in-alt"></i> Login
+                                    <i class="bi bi-box-arrow-in-right"></i> Login
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" asp-controller="Account" asp-action="Register">
-                                    <i class="fas fa-user-plus"></i> Register
+                                    <i class="bi bi-person-plus"></i> Register
                                 </a>
                             </li>
                         }

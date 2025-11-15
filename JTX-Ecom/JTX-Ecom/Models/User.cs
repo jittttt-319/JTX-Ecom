@@ -11,5 +11,7 @@ namespace JTX_Ecom.Models
         
         // Navigation properties
         public virtual ICollection<Order>? Orders { get; set; }
+        public virtual UserProfile? Profile { get; set; }
+        public virtual Cart? Cart { get; set; }
     }
 }

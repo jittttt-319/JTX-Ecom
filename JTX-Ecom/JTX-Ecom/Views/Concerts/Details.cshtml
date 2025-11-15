@@ -172,12 +172,47 @@
 
                     @if (Model.AvailableTickets > 0)
                     {
-                        <!-- Purchase Button -->
-                        <button class="btn btn-primary btn-lg w-100 mb-3" disabled>
-                            <i class="bi bi-ticket-perforated-fill"></i> Buy Tickets
-                        </button>
+                        <!-- Ticket Type Selection & Purchase Form -->
+                        <form asp-controller="Cart" asp-action="AddToCart" method="post">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="ConcertId" value="@Model.ConcertId" />
+                            
+                            <div class="mb-3">
+                                <label for="ticketType" class="form-label fw-bold">Ticket Type</label>
+                                <select name="TicketType" id="ticketType" class="form-select" required>
+                                    <option value="General">General - RM @Model.BasePrice.ToString("N2")</option>
+                                    <option value="VIP">VIP - RM @((Model.BasePrice * 2.0m).ToString("N2"))</option>
+                                    <option value="VVIP">VVIP - RM @((Model.BasePrice * 3.5m).ToString("N2"))</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="quantity" class="form-label fw-bold">Quantity</label>
+                                <select name="Quantity" id="quantity" class="form-select" required>
+                                    @for (int i = 1; i <= Math.Min(10, Model.AvailableTickets); i++)
+                                    {
+                                        <option value="@i">@i ticket@(i > 1 ? "s" : "")</option>
+                                    }
+                                </select>
+                            </div>
+
+                            @if (User.Identity?.IsAuthenticated == true)
+                            {
+                                <button type="submit" class="btn btn-primary btn-lg w-100 mb-3">
+                                    <i class="bi bi-cart-plus-fill"></i> Add to Cart
+                                </button>
+                            }
+                            else
+                            {
+                                <a asp-controller="Account" asp-action="Login" asp-route-returnUrl="@Context.Request.Path" 
+                                   class="btn btn-primary btn-lg w-100 mb-3">
+                                    <i class="bi bi-person-fill"></i> Login to Buy Tickets
+                                </a>
+                            }
+                        </form>
+
                         <p class="text-center text-muted small mb-0">
-                            <i class="bi bi-info-circle"></i> Ticket booking coming soon!
+                            <i class="bi bi-info-circle"></i> Prices in Malaysian Ringgit (RM)
                         </p>
                     }
                     else

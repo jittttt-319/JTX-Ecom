@@ -1,0 +1,78 @@
+@model List<JTX_Ecom.Models.Order>
+
+@{
+    ViewData["Title"] = "My Orders";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-5">
+    <div class="row">
+        <div class="col-12 mb-4">
+            <h2><i class="bi bi-bag-check-fill"></i> My Orders</h2>
+            <p class="text-muted">View all your ticket orders</p>
+        </div>
+    </div>
+
+    @if (Model.Any())
+    {
+        <div class="row">
+            <div class="col-12">
+                @foreach (var order in Model)
+                {
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-md-3">
+                                    <h6 class="text-muted mb-1">Order Number</h6>
+                                    <h5 class="mb-0">@order.OrderNumber</h5>
+                                </div>
+                                <div class="col-md-2">
+                                    <h6 class="text-muted mb-1">Date</h6>
+                                    <p class="mb-0">@order.OrderDate.ToString("dd MMM yyyy")</p>
+                                </div>
+                                <div class="col-md-2">
+                                    <h6 class="text-muted mb-1">Items</h6>
+                                    <p class="mb-0">@order.Quantity ticket(s)</p>
+                                </div>
+                                <div class="col-md-2">
+                                    <h6 class="text-muted mb-1">Total</h6>
+                                    <h5 class="mb-0 text-primary">RM @order.TotalAmount.ToString("N2")</h5>
+                                </div>
+                                <div class="col-md-2">
+                                    <h6 class="text-muted mb-1">Status</h6>
+                                    <span class="badge bg-@(order.PaymentStatus == "Completed" ? "success" : order.PaymentStatus == "Pending" ? "warning" : "danger")">
+                                        @order.PaymentStatus
+                                    </span>
+                                </div>
+                                <div class="col-md-1 text-end">
+                                    <a asp-action="Details" asp-route-id="@order.OrderId" class="btn btn-outline-primary btn-sm">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Pagination could be added here if needed -->
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-12">
+                <div class="card text-center py-5">
+                    <div class="card-body">
+                        <i class="bi bi-inbox display-1 text-muted mb-3"></i>
+                        <h3>No orders yet</h3>
+                        <p class="text-muted mb-4">You haven't made any purchases yet.</p>
+                        <a asp-controller="Concerts" asp-action="Index" class="btn btn-primary btn-lg">
+                            <i class="bi bi-search"></i> Browse Concerts
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

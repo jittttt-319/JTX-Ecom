@@ -1,0 +1,173 @@
+@model JTX_Ecom.Models.DTOs.CartSummaryDto
+
+@{
+    ViewData["Title"] = "Shopping Cart";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-5">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="mb-4">
+                <i class="bi bi-cart3"></i> Shopping Cart
+            </h2>
+        </div>
+    </div>
+
+    @if (Model.Items.Any())
+    {
+        <div class="row">
+            <!-- Cart Items -->
+            <div class="col-lg-8">
+                @foreach (var item in Model.Items)
+                {
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-md-2">
+                                    @if (!string.IsNullOrEmpty(item.ImageUrl))
+                                    {
+                                        <img src="@item.ImageUrl" alt="@item.ConcertTitle" class="img-fluid rounded">
+                                    }
+                                    else
+                                    {
+                                        <div class="bg-light rounded d-flex align-items-center justify-content-center" style="height: 80px;">
+                                            <i class="bi bi-music-note-beamed fs-2 text-muted"></i>
+                                        </div>
+                                    }
+                                </div>
+                                <div class="col-md-5">
+                                    <h5 class="mb-1">@item.ConcertTitle</h5>
+                                    <p class="text-muted mb-1">
+                                        <i class="bi bi-person-fill"></i> @item.Artist
+                                    </p>
+                                    <p class="text-muted mb-1">
+                                        <i class="bi bi-calendar-event"></i> @item.EventDate.ToString("dd MMM yyyy")
+                                    </p>
+                                    <p class="text-muted mb-0">
+                                        <i class="bi bi-geo-alt-fill"></i> @item.VenueName
+                                    </p>
+                                    <span class="badge bg-primary mt-2">@item.TicketType</span>
+                                </div>
+                                <div class="col-md-2 text-center">
+                                    <label class="form-label small">Quantity</label>
+                                    <form asp-action="UpdateQuantity" method="post" class="update-quantity-form">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="CartItemId" value="@item.CartItemId" />
+                                        <select name="Quantity" class="form-select form-select-sm quantity-select" data-cart-item-id="@item.CartItemId">
+                                            @for (int i = 1; i <= 10; i++)
+                                            {
+                                                <option value="@i" selected="@(i == item.Quantity)">@i</option>
+                                            }
+                                        </select>
+                                    </form>
+                                </div>
+                                <div class="col-md-2 text-center">
+                                    <p class="text-muted small mb-0">RM @item.PricePerTicket.ToString("N2") each</p>
+                                    <h5 class="mb-0 subtotal-@item.CartItemId">RM @item.Subtotal.ToString("N2")</h5>
+                                </div>
+                                <div class="col-md-1 text-center">
+                                    <form asp-action="RemoveItem" method="post">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="cartItemId" value="@item.CartItemId" />
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Remove this item from cart?')">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <!-- Order Summary -->
+            <div class="col-lg-4">
+                <div class="card sticky-top" style="top: 20px;">
+                    <div class="card-body">
+                        <h5 class="card-title mb-4">Order Summary</h5>
+                        
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Total Items:</span>
+                            <span class="fw-bold">@Model.TotalItems ticket(s)</span>
+                        </div>
+                        
+                        <hr>
+                        
+                        <div class="d-flex justify-content-between mb-3">
+                            <h5 class="mb-0">Total:</h5>
+                            <h5 class="mb-0 text-primary" id="cart-total">RM @Model.TotalAmount.ToString("N2")</h5>
+                        </div>
+
+                        <a asp-controller="Cart" asp-action="Checkout" class="btn btn-primary btn-lg w-100 mb-3">
+                            <i class="bi bi-credit-card"></i> Proceed to Checkout
+                        </a>
+
+                        <a asp-controller="Concerts" asp-action="Index" class="btn btn-outline-secondary w-100">
+                            <i class="bi bi-arrow-left"></i> Continue Shopping
+                        </a>
+
+                        <hr class="my-3">
+
+                        <div class="text-muted small">
+                            <p class="mb-2"><i class="bi bi-shield-check"></i> Secure checkout</p>
+                            <p class="mb-2"><i class="bi bi-arrow-clockwise"></i> Free cancellation</p>
+                            <p class="mb-0"><i class="bi bi-headset"></i> 24/7 support</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-12">
+                <div class="card text-center py-5">
+                    <div class="card-body">
+                        <i class="bi bi-cart-x display-1 text-muted mb-3"></i>
+                        <h3>Your cart is empty</h3>
+                        <p class="text-muted mb-4">Add some tickets to get started!</p>
+                        <a asp-controller="Concerts" asp-action="Index" class="btn btn-primary btn-lg">
+                            <i class="bi bi-search"></i> Browse Concerts
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            $('.quantity-select').on('change', function() {
+                var cartItemId = $(this).data('cart-item-id');
+                var quantity = $(this).val();
+                
+                $.ajax({
+                    url: '@Url.Action("UpdateQuantity", "Cart")',
+                    type: 'POST',
+                    data: {
+                        __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val(),
+                        CartItemId: cartItemId,
+                        Quantity: quantity
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            $('.subtotal-' + cartItemId).text('RM ' + response.subtotal);
+                            $('#cart-total').text('RM ' + response.totalAmount);
+                        } else {
+                            alert(response.message);
+                            location.reload();
+                        }
+                    },
+                    error: function() {
+                        alert('Error updating quantity');
+                        location.reload();
+                    }
+                });
+            });
+        });
+    </script>
+}

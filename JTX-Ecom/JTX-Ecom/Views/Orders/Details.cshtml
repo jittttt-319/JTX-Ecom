@@ -1,0 +1,171 @@
+@model JTX_Ecom.Models.Order
+
+@{
+    ViewData["Title"] = "Order Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-5">
+    <div class="row">
+        <div class="col-12 mb-4">
+            <a asp-action="Index" class="btn btn-outline-secondary mb-3">
+                <i class="bi bi-arrow-left"></i> Back to Orders
+            </a>
+            <h2><i class="bi bi-receipt"></i> Order Details</h2>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Order Information -->
+        <div class="col-lg-8 mb-4">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Order Information</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <p class="text-muted mb-1">Order Number</p>
+                            <h5>@Model.OrderNumber</h5>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <p class="text-muted mb-1">Order Date</p>
+                            <h5>@Model.OrderDate.ToString("dd MMMM yyyy, hh:mm tt")</h5>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <p class="text-muted mb-1">Payment Status</p>
+                            <span class="badge bg-@(Model.PaymentStatus == "Completed" ? "success" : Model.PaymentStatus == "Pending" ? "warning" : "danger") fs-6">
+                                @Model.PaymentStatus
+                            </span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <p class="text-muted mb-1">Payment Method</p>
+                            <h6>@Model.PaymentMethod</h6>
+                        </div>
+                        @if (!string.IsNullOrEmpty(Model.TransactionId))
+                        {
+                            <div class="col-12">
+                                <p class="text-muted mb-1">Transaction ID</p>
+                                <code>@Model.TransactionId</code>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <!-- Customer Information -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Customer Information</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <p class="text-muted mb-1">Name</p>
+                            <p class="fw-bold">@Model.CustomerName</p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <p class="text-muted mb-1">Email</p>
+                            <p class="fw-bold">@Model.CustomerEmail</p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <p class="text-muted mb-1">Phone</p>
+                            <p class="fw-bold">@Model.CustomerPhone</p>
+                        </div>
+                        <div class="col-12">
+                            <p class="text-muted mb-1">Billing Address</p>
+                            <p class="mb-0">
+                                @Model.BillingAddress<br>
+                                @Model.City, @Model.State @Model.PostalCode
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tickets -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Tickets</h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.Tickets != null && Model.Tickets.Any())
+                    {
+                        var groupedTickets = Model.Tickets.GroupBy(t => t.ConcertId);
+                        
+                        @foreach (var group in groupedTickets)
+                        {
+                            var firstTicket = group.First();
+                            
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <h5>@firstTicket.Concert?.Title</h5>
+                                            <p class="mb-2">
+                                                <i class="bi bi-person-fill"></i> @firstTicket.Concert?.Artist<br>
+                                                <i class="bi bi-calendar-event"></i> @firstTicket.Concert?.EventDate.ToString("dd MMMM yyyy")<br>
+                                                <i class="bi bi-geo-alt-fill"></i> @firstTicket.Concert?.Venue?.Name
+                                            </p>
+                                            <span class="badge bg-primary">@firstTicket.TicketType</span>
+                                            <span class="badge bg-secondary">@group.Count() ticket(s)</span>
+                                        </div>
+                                        <div class="col-md-4 text-end">
+                                            <h4 class="text-primary">RM @group.Sum(t => t.Price).ToString("N2")</h4>
+                                        </div>
+                                    </div>
+                                    
+                                    <hr>
+                                    
+                                    <p class="mb-2"><strong>Ticket Numbers:</strong></p>
+                                    <div class="d-flex flex-wrap gap-2">
+                                        @foreach (var ticket in group)
+                                        {
+                                            <a asp-action="TicketDetails" asp-route-id="@ticket.TicketId" class="badge bg-light text-dark border text-decoration-none">
+                                                @ticket.TicketNumber
+                                            </a>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <p class="text-muted mb-0">No tickets found for this order.</p>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Order Summary -->
+        <div class="col-lg-4">
+            <div class="card sticky-top" style="top: 20px;">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0">Order Summary</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Total Items:</span>
+                        <span class="fw-bold">@Model.Quantity ticket(s)</span>
+                    </div>
+                    
+                    <hr>
+                    
+                    <div class="d-flex justify-content-between mb-3">
+                        <h5 class="mb-0">Total Amount:</h5>
+                        <h4 class="mb-0 text-primary">RM @Model.TotalAmount.ToString("N2")</h4>
+                    </div>
+
+                    <a asp-action="MyTickets" class="btn btn-primary w-100 mb-2">
+                        <i class="bi bi-ticket-perforated"></i> View All My Tickets
+                    </a>
+
+                    <a asp-controller="Concerts" asp-action="Index" class="btn btn-outline-secondary w-100">
+                        <i class="bi bi-search"></i> Browse Concerts
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
